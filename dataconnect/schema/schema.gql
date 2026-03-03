@@ -1,0 +1,42 @@
+type FoundationInfo @table {
+  missionStatement: String!
+  visionStatement: String!
+  aboutUsText: String!
+  contactEmail: String
+  contactPhone: String
+  address: String
+}
+
+type TeamMember @table {
+  name: String!
+  role: String!
+  bio: String!
+  photoUrl: String
+  socialMediaLink: String
+}
+
+type Initiative @table {
+  title: String!
+  description: String!
+  imageUrl: String
+  startDate: Date
+  endDate: Date
+}
+
+type NewsArticle @table {
+  title: String!
+  content: String!
+  publishedAt: Timestamp!
+  imageUrl: String
+  author: TeamMember
+}
+
+type Event @table {
+  name: String!
+  date: Date!
+  location: String!
+  description: String!
+  imageUrl: String
+  registrationLink: String
+  time: String
+}

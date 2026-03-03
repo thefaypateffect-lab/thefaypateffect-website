@@ -1,0 +1,87 @@
+mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "This operation is for seeding demo data and should only be callable by privileged users.") {
+  teamMember_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      name: "Alice Smith",
+      bio: "Alice is a passionate advocate for community development.",
+      role: "Founder",
+      photoUrl: "https://example.com/alice.jpg",
+      socialMediaLink: "https://linkedin.com/in/alicesmith"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      name: "Bob Johnson",
+      bio: "Bob specializes in event management and logistics.",
+      role: "Event Coordinator",
+      photoUrl: "https://example.com/bob.jpg",
+      socialMediaLink: "https://twitter.com/bobjohnson"
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440002",
+      name: "Charlie Brown",
+      bio: "Charlie is our resident expert in digital outreach.",
+      role: "Marketing Lead",
+      photoUrl: "https://example.com/charlie.jpg",
+      socialMediaLink: "https://instagram.com/charliebrown"
+    }
+  ])
+  newsArticle_insertMany(data: [
+    {
+      title: "Our First Community Event a Huge Success!",
+      content: "The inaugural community event, held last Saturday, brought together over 200 participants for a day of learning and fun.",
+      publishedAt: "2023-10-26T10:00:00Z",
+      imageUrl: "https://example.com/event_success.jpg",
+      author: { id: "550e8400-e29b-41d4-a716-446655440000" }
+    },
+    {
+      title: "Announcing Our New Initiative for Youth Empowerment",
+      content: "We are thrilled to launch our new program aimed at empowering young individuals through mentorship and skill-building workshops.",
+      publishedAt: "2023-11-15T09:30:00Z",
+      imageUrl: "https://example.com/youth_empowerment.jpg",
+      author: { id: "550e8400-e29b-41d4-a716-446655440001" }
+    }
+  ])
+  event_insertMany(data: [
+    {
+      name: "Annual Gala Dinner",
+      date: "2024-03-10",
+      time: "19:00",
+      location: "Grand Ballroom, City Center",
+      description: "Join us for our annual gala dinner to celebrate our achievements and support our future endeavors.",
+      imageUrl: "https://example.com/gala_dinner.jpg",
+      registrationLink: "https://example.com/gala_registration"
+    },
+    {
+      name: "Community Workshop: Sustainable Living",
+      date: "2024-04-22",
+      time: "14:00",
+      location: "Green Hub Community Center",
+      description: "Learn practical tips and tricks for a more sustainable lifestyle.",
+      imageUrl: "https://example.com/sustainable_workshop.jpg",
+      registrationLink: "https://example.com/sustainable_registration"
+    }
+  ])
+  initiative_insertMany(data: [
+    {
+      title: "Youth Mentorship Program",
+      description: "Connecting young people with experienced mentors to guide their personal and professional growth.",
+      startDate: "2024-01-15",
+      endDate: "2024-12-15",
+      imageUrl: "https://example.com/mentorship_program.jpg"
+    },
+    {
+      title: "Environmental Conservation Drive",
+      description: "A year-long effort to promote environmental awareness and facilitate local clean-up initiatives.",
+      startDate: "2024-02-01",
+      imageUrl: "https://example.com/conservation_drive.jpg"
+    }
+  ])
+  foundationInfo_insert(data: {
+    aboutUsText: "We are a non-profit organization dedicated to fostering community growth and well-being through various programs and initiatives.",
+    missionStatement: "To empower individuals and communities to achieve their full potential.",
+    visionStatement: "A world where every individual has the opportunity to thrive.",
+    address: "123 Community Lane, Cityville",
+    contactEmail: "info@ourfoundation.org",
+    contactPhone: "+1 (555) 123-4567"
+  })
+}

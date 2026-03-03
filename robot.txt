@@ -1,0 +1,230 @@
+# robots.txt for The Faypat Effect Foundation
+# https://www.thefaypateffect.com
+# Created: March 3, 2026
+
+# ─────────────────────────────────────────────────
+# GLOBAL RULES - ALL CRAWLERS
+# ─────────────────────────────────────────────────
+User-agent: *
+Allow: /
+Allow: /$
+Allow: /#home
+Allow: /#about
+Allow: /#focus
+Allow: /#programs
+Allow: /#founder
+Allow: /#gallery
+Allow: /#volunteer
+Allow: /#donate
+Allow: /#contact
+Allow: /programs/
+Allow: /programs/*.html
+Allow: /images/
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+Allow: /*.css$
+Allow: /*.js$
+
+# Disallow internal/temporary paths
+Disallow: /private/
+Disallow: /tmp/
+Disallow: /temp/
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /config/
+Disallow: /vendor/
+Disallow: /node_modules/
+Disallow: /*.bak$
+Disallow: /*.old$
+Disallow: /*.tmp$
+Disallow: /*.log$
+Disallow: /*.sql$
+Disallow: /*.zip$
+Disallow: /*.tar$
+
+# Crawl delay for polite bots
+Crawl-delay: 1
+
+# ─────────────────────────────────────────────────
+# GOOGLE BOT SPECIFIC
+# ─────────────────────────────────────────────────
+User-agent: Googlebot
+Allow: /
+Allow: /*.json$
+Allow: /*.xml$
+Allow: /*?page=
+Allow: /*?id=
+Allow: /*?category=
+
+# Optimize for Google
+Crawl-delay: 0.5
+
+# ─────────────────────────────────────────────────
+# GOOGLE IMAGES BOT
+# ─────────────────────────────────────────────────
+User-agent: Googlebot-Image
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.webp$
+Allow: /*.svg$
+Disallow: /assets/icons/
+Crawl-delay: 1
+
+# ─────────────────────────────────────────────────
+# GOOGLE VIDEO BOT
+# ─────────────────────────────────────────────────
+User-agent: Googlebot-Video
+Allow: /*.mp4$
+Allow: /*.webm$
+Allow: /*.ogg$
+Disallow: /videos/private/
+Crawl-delay: 1
+
+# ─────────────────────────────────────────────────
+# BING BOT
+# ─────────────────────────────────────────────────
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# ─────────────────────────────────────────────────
+# YANDEX BOT
+# ─────────────────────────────────────────────────
+User-agent: Yandex
+Allow: /
+Crawl-delay: 2
+
+# ─────────────────────────────────────────────────
+# BAIDU BOT
+# ─────────────────────────────────────────────────
+User-agent: Baiduspider
+Allow: /
+Crawl-delay: 2
+
+# ─────────────────────────────────────────────────
+# DUCKDUCKGO BOT
+# ─────────────────────────────────────────────────
+User-agent: DuckDuckBot
+Allow: /
+Crawl-delay: 1
+
+# ─────────────────────────────────────────────────
+# AI & TRAINING BOTS - OPTIMIZED
+# ─────────────────────────────────────────────────
+
+# ChatGPT / OpenAI
+User-agent: GPTBot
+Allow: /
+Allow: /#about
+Allow: /#focus
+Allow: /#programs
+Allow: /#founder
+Allow: /#gallery
+Allow: /#volunteer
+Allow: /#donate
+Disallow: /private/
+Disallow: /tmp/
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Google AI/ML
+User-agent: Google-Extended
+Allow: /
+
+# Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+Crawl-delay: 1
+
+# Common Crawl
+User-agent: CCBot
+Allow: /
+Crawl-delay: 2
+
+# Apple Bot
+User-agent: Applebot
+Allow: /
+Crawl-delay: 1
+
+# Facebook / Meta AI
+User-agent: FacebookBot
+Allow: /
+Crawl-delay: 1
+
+# Amazon Bot
+User-agent: Amazonbot
+Allow: /
+Crawl-delay: 1
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+Crawl-delay: 1
+
+# ─────────────────────────────────────────────────
+# ARCHIVE & ACADEMIC CRAWLERS
+# ─────────────────────────────────────────────────
+
+User-agent: archive.org_bot
+Allow: /
+Crawl-delay: 2
+
+User-agent: ia_archiver
+Allow: /
+Crawl-delay: 2
+
+# ─────────────────────────────────────────────────
+# SOCIAL MEDIA CRAWLERS
+# ─────────────────────────────────────────────────
+
+# Twitter/X
+User-agent: Twitterbot
+Allow: /
+Crawl-delay: 1
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+Crawl-delay: 1
+
+# Pinterest
+User-agent: Pinterestbot
+Allow: /
+Crawl-delay: 1
+
+# Slack
+User-agent: Slackbot
+Allow: /
+Crawl-delay: 1
+
+# Discord
+User-agent: Discordbot
+Allow: /
+Crawl-delay: 1
+
+# WhatsApp
+User-agent: WhatsApp
+Allow: /
+Crawl-delay: 1
+
+# Telegram
+User-agent: TelegramBot
+Allow: /
+Crawl-delay: 1
+
+# ─────────────────────────────────────────────────
+# SITEMAP LOCATION
+# ─────────────────────────────────────────────────
+Sitemap: https://www.thefaypateffect.com/sitemap.xml
+
+# ─────────────────────────────────────────────────
+# HOST DIRECTIVE (for Yandex)
+# ─────────────────────────────────────────────────
+Host: https://www.thefaypateffect.com

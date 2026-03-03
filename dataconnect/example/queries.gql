@@ -1,0 +1,44 @@
+query AllNewsArticles @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public as it retrieves general news articles.") {
+  newsArticles(orderBy: [{publishedAt: DESC}], limit: 10) {
+    id
+    title
+    imageUrl
+    publishedAt
+    author {
+      name
+      role
+    }
+  }
+}
+
+query EventsByLocation($location: String!) @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public as it retrieves events based on a specified location.") {
+  events(where: {location: {eq: $location}}, orderBy: [{date: ASC}]) {
+    id
+    name
+    date
+    time
+    location
+    description
+    registrationLink
+  }
+}
+
+mutation CreateInitiative($title: String!, $description: String!, $startDate: Date, $endDate: Date, $imageUrl: String) @auth(level: USER, insecureReason: "This operation allows any logged-in user to create an initiative, which is a design choice for this application.") {
+  initiative_insert(data: {
+    title: $title
+    description: $description
+    startDate: $startDate
+    endDate: $endDate
+    imageUrl: $imageUrl
+  }) {
+    id
+  }
+}
+
+mutation UpdateTeamMemberBio($id: UUID!, $newBio: String!) @auth(level: USER, insecureReason: "This operation allows any logged-in user to update a team member's bio, which is a design choice for this application.") {
+  teamMember_update(key: {id: $id}, data: {
+    bio: $newBio
+  }) {
+    id
+  }
+}
