@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | The Faypat Effect Foundation</title>
+    <!-- Same SEO meta as main site -->
+    <meta name="description" content="Create an account to join The Faypat Effect Foundation community and support our humanitarian mission.">
+    <meta name="keywords" content="NGO, humanitarian, charity, faith-based, sign up, registration, Nigeria, Faypat Effect">
+    <meta name="author" content="The Faypat Effect Foundation">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00D9A3;
+            --primary-deep: #0A4D3C;
+            --primary-soft: #B8F5E5;
+            --white: #FFFFFF;
+            --off-white: #F4F7F5;
+            --gray-100: #F0F3F1;
+            --gray-600: #4A5C55;
+            --gray-900: #1E2B26;
+            --shadow-sm: 0 10px 30px -10px rgba(10, 77, 60, 0.08);
+            --shadow-md: 0 20px 40px -12px rgba(10, 77, 60, 0.15);
+            --shadow-lg: 0 30px 60px -15px rgba(10, 77, 60, 0.25);
+            --transition: all 0.3s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+            --border-radius-card: 32px;
+            --border-radius-btn: 60px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--primary-deep) 0%, #06382b 100%);
+            color: var(--gray-900);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .animated-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(0, 217, 163, 0.12);
+            animation: float 22s infinite linear;
+        }
+        .particle:nth-child(3n) { background: rgba(184, 245, 229, 0.1); }
+        .particle:nth-child(5n) { background: rgba(255,255,255,0.03); }
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-100px) rotate(720deg) scale(1.5); opacity: 0; }
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 10;
+            animation: slideUp 0.8s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .auth-card {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-card);
+            padding: 50px 40px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            height: 100px;
+            width: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+
+        .auth-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
+            color: var(--primary-deep);
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .auth-subtitle {
+            color: var(--gray-600);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--primary-deep);
+            font-size: 0.95rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            color: var(--primary);
+            font-size: 1.1rem;
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 18px;
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 1;
+            background: transparent;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 50px 16px 50px;
+            border: 2px solid rgba(10, 77, 60, 0.1);
+            border-radius: 20px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--off-white);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 217, 163, 0.15);
+            background: white;
+        }
+
+        .form-control.error {
+            border-color: #ff4444;
+            animation: shake 0.3s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .error-message i {
+            font-size: 0.9rem;
+        }
+
+        .password-strength {
+            margin-top: 10px;
+            height: 5px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .strength-text {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .terms-group {
+            margin: 30px 0;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 3px;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            font-size: 0.95rem;
+            color: var(--gray-600);
+            line-height: 1.5;
+        }
+
+        .checkbox-label a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-btn {
+            background: var(--primary);
+            color: var(--primary-deep);
+            border: none;
+            padding: 18px 40px;
+            border-radius: var(--border-radius-btn);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            box-shadow: 0 16px 32px rgba(0, 217, 163, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .auth-btn:hover:not(:disabled) {
+            background: var(--primary-deep);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 217, 163, 0.4);
+        }
+
+        .auth-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .auth-btn i {
+            transition: transform 0.3s;
+        }
+
+        .auth-btn:hover:not(:disabled) i {
+            transform: translateX(5px);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(10, 77, 60, 0.1);
+        }
+
+        .auth-footer p {
+            color: var(--gray-600);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: var(--transition);
+        }
+
+        .auth-footer a:hover {
+            color: var(--primary-deep);
+            text-decoration: underline;
+        }
+
+        .alert {
+            padding: 16px 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert-error {
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #cc0000;
+        }
+
+        .alert-success {
+            background: rgba(0, 217, 163, 0.1);
+            border: 1px solid rgba(0, 217, 163, 0.3);
+            color: var(--primary-deep);
+        }
+
+        .alert-info {
+            background: rgba(0, 183, 255, 0.1);
+            border: 1px solid rgba(0, 183, 255, 0.3);
+            color: #0066cc;
+        }
+
+        .alert i {
+            font-size: 1.3rem;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .verification-note {
+            background: rgba(0, 217, 163, 0.1);
+            border: 1px solid var(--primary);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        .verification-note i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .verification-note h3 {
+            color: var(--primary-deep);
+            margin-bottom: 10px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .verification-note p {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+
+        .resend-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary-deep);
+            padding: 10px 20px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .resend-btn:hover {
+            background: var(--primary);
+            color: var(--primary-deep);
+        }
+
+        @media (max-width: 768px) {
+            .auth-card {
+                padding: 40px 25px;
+            }
+            
+            .auth-title {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-card {
+                padding: 30px 20px;
+            }
+            
+            .auth-title {
+                font-size: 1.6rem;
+            }
+            
+            .form-control {
+                padding: 14px 45px 14px 45px;
+                font-size: 0.95rem;
+            }
+            
+            .input-icon {
+                left: 15px;
+                font-size: 1rem;
+            }
+            
+            .password-toggle {
+                right: 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg" id="particles-container"></div>
+    
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo-section">
+                <img src="logo.png" alt="The Faypat Effect Foundation Logo" class="logo" onerror="this.src='https://via.placeholder.com/100x100?text=Logo'">
+                <h1 class="auth-title">Create Account</h1>
+                <p class="auth-subtitle">Join us in making a difference</p>
+            </div>
+
+            <div id="alertContainer"></div>
+
+            <!-- Signup Form -->
+            <form id="signupForm">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone Number (Optional)</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone input-icon"></i>
+                        <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="form-control" id="password" placeholder="Create a password" required>
+                        <button type="button" class="password-toggle" id="togglePassword" tabindex="-1">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-strength">
+                        <div class="strength-bar" id="strengthBar"></div>
+                    </div>
+                    <div class="strength-text" id="strengthText"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your password" required>
+                        <button type="button" class="password-toggle" id="toggleConfirmPassword" tabindex="-1">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="terms-group">
+                    <label class="checkbox-wrapper">
+                        <input type="checkbox" id="termsCheckbox" required>
+                        <span class="checkbox-label">
+                            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="auth-btn" id="signupBtn">
+                    <span>Create Account</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Verification Pending Message (hidden by default) -->
+            <div id="verificationPending" class="verification-note" style="display: none;">
+                <i class="fas fa-envelope"></i>
+                <h3>Verify Your Email</h3>
+                <p>We've sent a verification link to <span id="verificationEmail"></span>. Please check your inbox and click the link to verify your account.</p>
+                <p class="verification-warning" style="color: #ff4444; font-size: 0.9rem;">You won't be able to log in until you verify your email.</p>
+                <button class="resend-btn" id="resendVerificationBtn">
+                    <i class="fas fa-redo-alt"></i> Resend Verification Email
+                </button>
+                <p style="margin-top: 15px; font-size: 0.85rem;">
+                    Already verified? <a href="login.html" style="color: var(--primary);">Sign In</a>
+                </p>
+            </div>
+
+            <div class="auth-footer">
+                <p>Already have an account? <a href="login.html">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUkPN6x_gxfzliqwuyqAOhhEDPgdsDX0I",
+            authDomain: "thefaypateffect-920b3.firebaseapp.com",
+            projectId: "thefaypateffect-920b3",
+            storageBucket: "thefaypateffect-920b3.firebasestorage.app",
+            messagingSenderId: "661743543911",
+            appId: "1:661743543911:web:faff8deb5e9b6313e796c2",
+            measurementId: "G-VTXWSLDCX0"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Important: Configure the email verification URL
+        auth.useDeviceLanguage(); // This will use the browser's language for emails
+
+        // Create particles background
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            if (container) {
+                for (let i = 0; i < 30; i++) {
+                    let p = document.createElement('div');
+                    p.classList.add('particle');
+                    let s = Math.random() * 20 + 5;
+                    p.style.width = s + 'px';
+                    p.style.height = s + 'px';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDuration = (Math.random() * 18 + 10) + 's';
+                    p.style.animationDelay = (Math.random() * 10) + 's';
+                    p.style.filter = `blur(${Math.random() * 3}px)`;
+                    container.appendChild(p);
+                }
+            }
+        }
+        createParticles();
+
+        // Password visibility toggle
+        function setupPasswordToggle(inputId, toggleId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.getElementById(toggleId);
+            
+            if (input && toggle) {
+                toggle.addEventListener('click', function() {
+                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                    input.setAttribute('type', type);
+                    
+                    // Toggle icon
+                    const icon = this.querySelector('i');
+                    if (icon) {
+                        icon.className = type === 'password' ? 'far fa-eye' : 'far fa-eye-slash';
+                    }
+                });
+            }
+        }
+
+        // Setup password toggles
+        setupPasswordToggle('password', 'togglePassword');
+        setupPasswordToggle('confirmPassword', 'toggleConfirmPassword');
+
+        // Password strength checker
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('strengthBar');
+        const strengthText = document.getElementById('strengthText');
+
+        if (passwordInput && strengthBar && strengthText) {
+            passwordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                if (password.length >= 8) strength++;
+                if (password.match(/[a-z]+/)) strength++;
+                if (password.match(/[A-Z]+/)) strength++;
+                if (password.match(/[0-9]+/)) strength++;
+                if (password.match(/[$@#&!%*?]+/)) strength++;
+
+                const strengths = ['Very Weak', 'Weak', 'Fair', 'Good', 'Strong'];
+                const colors = ['#ff4444', '#ff7744', '#ffaa44', '#00d9a3', '#0a4d3c'];
+                
+                const width = Math.min(strength * 20, 100);
+                strengthBar.style.width = width + '%';
+                
+                if (strength > 0) {
+                    strengthBar.style.backgroundColor = colors[strength - 1];
+                    strengthText.textContent = 'Password strength: ' + strengths[strength - 1];
+                    strengthText.style.color = colors[strength - 1];
+                } else {
+                    strengthBar.style.backgroundColor = '#ff4444';
+                    strengthText.textContent = 'Password strength: Very Weak';
+                    strengthText.style.color = '#ff4444';
+                }
+            });
+        }
+
+        // Show alert function
+        function showAlert(type, message) {
+            const alertContainer = document.getElementById('alertContainer');
+            if (!alertContainer) return;
+            
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = `
+                <i class="fas ${type === 'error' ? 'fa-exclamation-circle' : type === 'success' ? 'fa-check-circle' : 'fa-info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // Store current user for verification
+        let currentUserForVerification = null;
+
+        // Signup form submission
+        const signupForm = document.getElementById('signupForm');
+        const signupBtn = document.getElementById('signupBtn');
+        const verificationPending = document.getElementById('verificationPending');
+        const verificationEmail = document.getElementById('verificationEmail');
+        const resendVerificationBtn = document.getElementById('resendVerificationBtn');
+
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Get form values
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const termsChecked = document.getElementById('termsCheckbox').checked;
+
+            // Validation
+            if (!fullName || !email || !password || !confirmPassword) {
+                showAlert('error', 'Please fill in all required fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showAlert('error', 'Passwords do not match');
+                return;
+            }
+
+            if (password.length < 8) {
+                showAlert('error', 'Password must be at least 8 characters long');
+                return;
+            }
+
+            if (!termsChecked) {
+                showAlert('error', 'You must agree to the Terms of Service');
+                return;
+            }
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showAlert('error', 'Please enter a valid email address');
+                return;
+            }
+
+            // Disable button and show loading
+            signupBtn.disabled = true;
+            signupBtn.innerHTML = '<span class="loading-spinner"></span><span>Creating Account...</span>';
+
+            try {
+                // Create user in Firebase Auth
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Store user for verification resend
+                currentUserForVerification = user;
+
+                // Update profile with full name
+                await user.updateProfile({
+                    displayName: fullName
+                });
+
+                // Prepare user data for Firestore
+                const userData = {
+                    uid: user.uid,
+                    fullName: fullName,
+                    email: email,
+                    phone: phone || '',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    role: 'user',
+                    isActive: true,
+                    emailVerified: false,
+                    lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                // Save to Firestore
+                await db.collection('users').doc(user.uid).set(userData);
+
+                // Send email verification with custom settings
+                const actionCodeSettings = {
+                    url: window.location.origin + '/login.html?verified=true', // Redirect after verification
+                    handleCodeInApp: false
+                };
+                
+                await user.sendEmailVerification(actionCodeSettings);
+
+                // Hide form and show verification message
+                signupForm.style.display = 'none';
+                verificationPending.style.display = 'block';
+                verificationEmail.textContent = email;
+
+                showAlert('success', 'Account created! Please check your email for verification.');
+
+            } catch (error) {
+                console.error('Signup error:', error);
+                
+                let errorMessage = 'An error occurred during signup';
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'This email is already registered. Please login instead.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'Invalid email address';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'Password is too weak. Please use a stronger password.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMessage = 'Network error. Please check your internet connection.';
+                } else if (error.code === 'permission-denied') {
+                    errorMessage = 'Unable to save user data. Please try again.';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showAlert('error', errorMessage);
+                
+                // Re-enable button
+                signupBtn.disabled = false;
+                signupBtn.innerHTML = '<span>Create Account</span><i class="fas fa-arrow-right"></i>';
+            }
+        });
+
+        // Resend verification email
+        resendVerificationBtn.addEventListener('click', async () => {
+            if (!currentUserForVerification) {
+                showAlert('error', 'No user found. Please sign up again.');
+                return;
+            }
+
+            try {
+                const actionCodeSettings = {
+                    url: window.location.origin + '/login.html?verified=true',
+                    handleCodeInApp: false
+                };
+                
+                await currentUserForVerification.sendEmailVerification(actionCodeSettings);
+                showAlert('success', 'Verification email resent! Please check your inbox.');
+            } catch (error) {
+                console.error('Resend error:', error);
+                showAlert('error', 'Failed to resend verification email. Please try again.');
+            }
+        });
+
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user && user.emailVerified) {
+                // User is already logged in and verified, redirect to home
+                window.location.href = 'home.html';
+            } else if (user && !user.emailVerified) {
+                // User is logged in but not verified - show verification message
+                signupForm.style.display = 'none';
+                verificationPending.style.display = 'block';
+                verificationEmail.textContent = user.email;
+                currentUserForVerification = user;
+            }
+        });
+
+        // Check URL for verification status
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('verified') === 'true') {
+            showAlert('success', 'Email verified successfully! You can now log in.');
+        }
+    </script>
+</body>
+</html>

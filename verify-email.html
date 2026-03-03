@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Email Verification - The Faypat Effect Foundation</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0A4D3C, #06382b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255,255,255,0.1);
+            padding: 40px;
+            border-radius: 32px;
+            backdrop-filter: blur(10px);
+            max-width: 400px;
+        }
+        h1 { color: #00D9A3; }
+        button {
+            background: #00D9A3;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 60px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Verification</h1>
+        <div id="message">Processing verification...</div>
+        <button onclick="window.location.href='login.html'" style="display:none;" id="loginBtn">Go to Login</button>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUkPN6x_gxfzliqwuyqAOhhEDPgdsDX0I",
+            authDomain: "thefaypateffect-920b3.firebaseapp.com",
+            projectId: "thefaypateffect-920b3"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        
+        // Handle the email verification
+        if (auth.isSignInWithEmailLink(window.location.href)) {
+            let email = window.prompt('Please enter your email for verification');
+            if (email) {
+                auth.signInWithEmailLink(email, window.location.href)
+                    .then(() => {
+                        document.getElementById('message').innerHTML = '✓ Email verified successfully!';
+                        document.getElementById('loginBtn').style.display = 'inline-block';
+                    })
+                    .catch(error => {
+                        document.getElementById('message').innerHTML = '❌ Verification failed: ' + error.message;
+                    });
+            }
+        } else {
+            document.getElementById('message').innerHTML = 'Invalid verification link';
+        }
+    </script>
+</body>
+</html>
