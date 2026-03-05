@@ -42,7 +42,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
-    <!-- EmailJS -->
+    <!-- EmailJS (kept but form uses Formspree now) -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <style>
@@ -168,23 +168,24 @@
             align-items: center;
             flex-shrink: 0;
             text-decoration: none;
-            /* Give logo space above/below without blowing up nav height */
             padding: 4px 0;
+            /* pull logo left, no extra margin */
         }
 
-        /* ── Logo: desktop ── */
+        /* ── Logo: MASSIVE & BOLD on desktop, still big on mobile ── */
         .nav-logo {
-            height: 68px;
+            height: 90px;          /* dramatically increased from 68px */
             width: auto;
+            max-width: 220px;       /* keeps it from going insanely wide */
             object-fit: contain;
             display: block;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 6px 16px rgba(0,0,0,0.5));
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
         .nav-logo:hover {
             transform: scale(1.05);
-            filter: drop-shadow(0 6px 16px rgba(0,217,163,0.4));
+            filter: drop-shadow(0 8px 22px rgba(0,217,163,0.5));
         }
 
         /* Desktop nav links */
@@ -247,25 +248,40 @@
             box-shadow: 0 16px 32px rgba(0,217,163,0.3);
         }
 
-        /* ── Mobile menu button: always far right ── */
+        /* ── Mobile menu button: redesigned like "cto" – bold, rounded, with text/icon combo ── */
         .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: 2px solid rgba(255,255,255,0.25);
+            display: none;  /* hidden on desktop */
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: rgba(0,217,163,0.15);
+            border: 2px solid var(--primary);
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
             cursor: pointer;
-            padding: 9px 13px;
-            border-radius: 10px;
-            transition: all 0.2s;
-            margin-left: auto;   /* push hard to right */
+            padding: 10px 18px;
+            border-radius: 40px;        /* pill shape */
+            transition: all 0.25s;
+            margin-left: auto;
             flex-shrink: 0;
+            backdrop-filter: blur(8px);
+            letter-spacing: 0.03em;
+        }
+
+        .mobile-menu-btn i {
+            font-size: 1.3rem;
+            color: var(--primary);
         }
 
         .mobile-menu-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-            background: rgba(0,217,163,0.08);
+            background: var(--primary);
+            color: var(--primary-deep);
+            border-color: transparent;
+        }
+
+        .mobile-menu-btn:hover i {
+            color: var(--primary-deep);
         }
 
         /* ══ HERO ══ */
@@ -276,7 +292,6 @@
             background: linear-gradient(150deg, #062d21 0%, #0A4D3C 50%, #0d5c48 100%);
             position: relative;
             overflow: hidden;
-            /* Solid top padding equal to nav height so content never hides under nav */
             padding-top: var(--nav-h);
         }
 
@@ -697,7 +712,6 @@
             cursor: pointer;
         }
 
-        /* Caption overlay — shortened on mobile via clamp */
         .gallery-caption-overlay {
             position: absolute; bottom: 0; left: 0; right: 0;
             background: linear-gradient(to top, rgba(7,40,30,0.94) 0%, rgba(7,40,30,0.55) 55%, transparent 100%);
@@ -710,7 +724,6 @@
             color: white; margin-bottom: 6px;
         }
 
-        /* Description: clamped to 2 lines, read-more toggle */
         .gallery-desc-text {
             color: rgba(255,255,255,0.78);
             font-size: clamp(0.82rem, 1.5vw, 1rem);
@@ -741,7 +754,6 @@
 
         .gallery-read-more:hover { opacity: 0.75; }
 
-        /* Image counter badge */
         .gallery-img-counter {
             position: absolute; top: 16px; right: 16px;
             background: rgba(0,0,0,0.55); backdrop-filter: blur(6px);
@@ -750,7 +762,6 @@
             display: none;
         }
 
-        /* Gallery nav arrows */
         .gallery-arrow {
             position: absolute; top: 50%; transform: translateY(-50%);
             width: 52px; height: 52px;
@@ -765,7 +776,6 @@
         .gallery-arrow.prev { left: 20px; }
         .gallery-arrow.next { right: 20px; }
 
-        /* Dots */
         .gallery-dots {
             position: absolute; bottom: 20px; right: 48px;
             display: flex; gap: 8px; z-index: 10;
@@ -779,7 +789,6 @@
 
         .g-dot.active { background: var(--primary); transform: scale(1.4); }
 
-        /* Thumbnail strip */
         .gallery-thumbs {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -805,7 +814,6 @@
         .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
         .gallery-thumb:hover img { transform: scale(1.08); }
 
-        /* Multi-image indicator on thumb */
         .thumb-multi-badge {
             position: absolute; bottom: 6px; right: 6px;
             background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
@@ -814,7 +822,6 @@
             display: flex; align-items: center; gap: 4px;
         }
 
-        /* Loading / empty */
         .gallery-loading {
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
@@ -903,7 +910,7 @@
         .lightbox-nav button:hover { background: var(--primary); color: var(--primary-deep); border-color: transparent; }
         .lightbox-nav button:disabled { opacity: 0.3; cursor: default; }
 
-        /* ══ VOLUNTEER FORM ══ */
+        /* ══ VOLUNTEER FORM — now with Formspree ══ */
         .volunteer-section { background: var(--off-white); }
 
         .vol-wrap {
@@ -968,7 +975,6 @@
         .form-success h3 { font-size: 2rem; color: var(--primary-deep); margin-bottom: 12px; }
         .form-success p { color: var(--gray-600); }
 
-        /* Spinner inside button */
         .btn-spinner {
             display: inline-block; width: 18px; height: 18px;
             border: 2.5px solid rgba(10,77,60,0.3); border-top-color: var(--primary-deep);
@@ -1006,9 +1012,8 @@
 
         .footer-brand { display: flex; flex-direction: column; }
 
-        /* ── Footer logo: fixed size, never deformed ── */
         .footer-logo {
-            height: 90px;
+            height: 100px;        /* also bigger */
             width: auto;
             object-fit: contain;
             margin-bottom: 22px;
@@ -1077,7 +1082,7 @@
         .fade-up.d3 { transition-delay: 0.3s; }
         .fade-up.d4 { transition-delay: 0.4s; }
 
-        /* ══ RESPONSIVE ══ */
+        /* ══ RESPONSIVE — preserving logo size on mobile, menu button prominent ══ */
         @media (max-width: 1100px) {
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 44px; }
             .founder-layout { grid-template-columns: 320px 1fr; gap: 56px; }
@@ -1085,9 +1090,8 @@
         }
 
         @media (max-width: 900px) {
-            :root { --nav-h: 70px; }
+            :root { --nav-h: 80px; }   /* keep enough height for big logo */
 
-            /* Hide desktop links, show hamburger */
             .nav-links {
                 display: none;
                 position: fixed;
@@ -1136,10 +1140,10 @@
                 font-size: 1rem;
             }
 
-            .mobile-menu-btn { display: flex; align-items: center; justify-content: center; }
+            .mobile-menu-btn { display: flex; }  /* show on mobile */
 
-            /* Logo: slightly smaller on tablet/mobile */
-            .nav-logo { height: 50px; }
+            /* Logo: still big on mobile, but cap a bit so it doesn't overflow */
+            .nav-logo { height: 65px; max-width: 180px; }
 
             .founder-layout { grid-template-columns: 1fr; gap: 48px; }
             .founder-img-wrap { max-width: 380px; margin: 0 auto; }
@@ -1152,10 +1156,10 @@
         }
 
         @media (max-width: 768px) {
-            :root { --nav-h: 66px; }
+            :root { --nav-h: 70px; }
             section { padding: 80px 0; }
             .nav-container { padding: 0 16px; }
-            .nav-logo { height: 46px; }
+            .nav-logo { height: 55px; }
             .hero h1 { font-size: 2.4rem; }
             .hero-desc { font-size: 1rem; }
             .hero-btns { flex-direction: column; gap: 12px; }
@@ -1177,8 +1181,8 @@
         }
 
         @media (max-width: 520px) {
-            :root { --nav-h: 62px; }
-            .nav-logo { height: 40px; }
+            :root { --nav-h: 66px; }
+            .nav-logo { height: 48px; max-width: 150px; }
             .hero h1 { font-size: 1.9rem; }
             .gallery-featured { height: 300px; }
             .gallery-thumbs { grid-template-columns: repeat(2, 1fr); }
@@ -1186,12 +1190,18 @@
             .stats-grid { grid-template-columns: 1fr 1fr; }
             .stat-number { font-size: 3rem; }
             .vol-wrap { padding: 32px 18px; border-radius: 28px; }
-            .footer-logo { height: 72px; }
+            .footer-logo { height: 80px; }
             .gallery-dots { right: 20px; bottom: 14px; }
             .gallery-caption-overlay { padding: 28px 16px 16px; }
 
             .toast-container { left: 16px; right: 16px; bottom: 16px; }
             .toast { max-width: none; }
+
+            .mobile-menu-btn {
+                padding: 8px 14px;
+                font-size: 1rem;
+            }
+            .mobile-menu-btn i { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -1204,13 +1214,15 @@
 <header id="mainHeader">
     <div class="nav-container">
         <a href="#home" class="logo-wrap">
+            <!-- logo is now MASSIVE — height increased dramatically -->
             <img src="logo.png" alt="The Faypat Effect Foundation" class="nav-logo"
-                 onerror="this.src='https://via.placeholder.com/200x68/0A4D3C/00D9A3?text=FPF'">
+                 onerror="this.src='https://via.placeholder.com/200x90/0A4D3C/00D9A3?text=FPF'">
         </a>
 
-        <!-- Hamburger — always right-aligned via margin-left: auto -->
+        <!-- Mobile menu button – redesigned (bold, pill, icon+text) like "cto" -->
         <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu" aria-expanded="false">
             <i class="fas fa-bars" id="menuIcon"></i>
+            <span>Menu</span>
         </button>
 
         <ul class="nav-links" id="navList" role="navigation">
@@ -1439,7 +1451,7 @@
     </div>
 </div>
 
-<!-- ══ VOLUNTEER ══ -->
+<!-- ══ VOLUNTEER — FORMSPREE INTEGRATION ══ -->
 <section id="volunteer" class="volunteer-section">
     <div class="container">
         <div class="vol-wrap fade-up">
@@ -1449,7 +1461,8 @@
                 <p style="text-align:center; color:var(--gray-600); max-width:520px; margin:12px auto 0;">Fill out the form below to apply as a volunteer and help us create lasting change in communities across Nigeria.</p>
             </div>
             <div id="volFormWrap">
-                <form id="volunteerForm" novalidate>
+                <!-- UPDATED: Formspree action, method POST, all inputs have name attributes -->
+                <form id="volunteerForm" action="https://formspree.io/f/maqpwypo" method="POST" novalidate>
                     <div class="form-row">
                         <div class="form-group">
                             <label class="form-label">First Name *</label>
@@ -1520,8 +1533,8 @@
                         </select>
                     </div>
                     <input type="hidden" name="time" id="formTime">
-                    <!-- Hidden fields for EmailJS template variables -->
-                    <input type="hidden" name="to_name" value="Faypat Effect Foundation">
+                    <!-- Additional hidden field for Formspree (optional) -->
+                    <input type="hidden" name="_subject" value="New Volunteer Application from The Faypat Effect">
                     <button type="submit" class="vol-submit" id="volSubmitBtn">
                         <span id="volBtnText">Submit Application</span>
                         <i class="fas fa-paper-plane" id="volBtnIcon"></i>
@@ -1557,7 +1570,7 @@
         <div class="footer-grid">
             <div class="footer-brand">
                 <img src="logo.png" alt="The Faypat Effect Foundation" class="footer-logo"
-                     onerror="this.src='https://via.placeholder.com/180x90/061e15/00D9A3?text=FPF'">
+                     onerror="this.src='https://via.placeholder.com/180x100/061e15/00D9A3?text=FPF'">
                 <p class="footer-tagline">Inspiring Confidence, Creativity and Compassion through Faith. Spreading the gospel through humanitarian impact.</p>
                 <div class="social-row">
                     <a href="#" class="soc-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -1623,12 +1636,14 @@
     </div>
 </footer>
 
-<!-- ══════════════ SCRIPTS ══════════════ -->
+<!-- ══════════════ COMPLETE SCRIPTS — GALLERY FULLY RESTORED ══════════════ -->
 <script>
 (function () {
     'use strict';
 
-    /* ── Firebase (no auth for public read) ── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  FIREBASE CONFIG & INIT
+    // ─────────────────────────────────────────────────────────────────────────
     const firebaseConfig = {
         apiKey: "AIzaSyDUkPN6x_gxfzliqwuyqAOhhEDPgdsDX0I",
         authDomain: "thefaypateffect-920b3.firebaseapp.com",
@@ -1641,12 +1656,14 @@
     if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    /* ── EmailJS (replace with your actual keys) ── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  EMAILJS (kept but not used for form – optional)
+    // ─────────────────────────────────────────────────────────────────────────
     emailjs.init({ publicKey: "YOUR_EMAILJS_PUBLIC_KEY" });
 
-    /* ──────────────────────────────────────────────
-       TOAST SYSTEM
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  TOAST SYSTEM
+    // ─────────────────────────────────────────────────────────────────────────
     function showToast(message, type = 'success', duration = 4000) {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
@@ -1660,9 +1677,9 @@
         }, duration);
     }
 
-    /* ──────────────────────────────────────────────
-       MOBILE NAV — perfectly fixed
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  MOBILE NAV (updated for new button with text)
+    // ─────────────────────────────────────────────────────────────────────────
     const mobileBtn = document.getElementById('mobileMenuBtn');
     const navList   = document.getElementById('navList');
     const menuIcon  = document.getElementById('menuIcon');
@@ -1686,12 +1703,10 @@
         navList.classList.contains('mobile-open') ? closeMobileMenu() : openMobileMenu();
     });
 
-    // Close when any link/button inside nav is tapped
     navList.querySelectorAll('a, button').forEach(el => {
         el.addEventListener('click', closeMobileMenu);
     });
 
-    // Close when clicking outside
     document.addEventListener('click', (e) => {
         if (navList.classList.contains('mobile-open') &&
             !navList.contains(e.target) &&
@@ -1700,17 +1715,16 @@
         }
     });
 
-    // Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeMobileMenu();
-            closeLightbox();
+            closeLightbox();      // defined below
         }
     });
 
-    /* ──────────────────────────────────────────────
-       HERO CAROUSEL
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  HERO CAROUSEL
+    // ─────────────────────────────────────────────────────────────────────────
     const heroSlides = document.querySelectorAll('.hero-slide');
     let hIdx = 0;
     setInterval(() => {
@@ -1719,9 +1733,9 @@
         heroSlides[hIdx].classList.add('active');
     }, 5000);
 
-    /* ──────────────────────────────────────────────
-       HERO PARTICLES
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  HERO PARTICLES
+    // ─────────────────────────────────────────────────────────────────────────
     const pContainer = document.getElementById('heroParticles');
     for (let i = 0; i < 32; i++) {
         const p = document.createElement('div');
@@ -1731,9 +1745,9 @@
         pContainer.appendChild(p);
     }
 
-    /* ──────────────────────────────────────────────
-       STATS COUNTER
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  STATS COUNTER
+    // ─────────────────────────────────────────────────────────────────────────
     const cObserver = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             if (!e.isIntersecting) return;
@@ -1751,9 +1765,9 @@
     }, { threshold: 0.6 });
     document.querySelectorAll('[data-count]').forEach(el => cObserver.observe(el));
 
-    /* ──────────────────────────────────────────────
-       SCROLL FADE-UP
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  SCROLL FADE-UP
+    // ─────────────────────────────────────────────────────────────────────────
     const fObserver = new IntersectionObserver((entries) => {
         entries.forEach(e => {
             if (e.isIntersecting) {
@@ -1764,26 +1778,22 @@
     }, { threshold: 0.12 });
     document.querySelectorAll('.fade-up').forEach(el => fObserver.observe(el));
 
-    /* ──────────────────────────────────────────────
-       GALLERY — Firestore with multi-image support
-       Each program may have:
-         - data.images: string[]  (new — array of URLs)
-         - data.imageUrl: string  (legacy — single URL)
-       We expose all images per program in the lightbox.
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  GALLERY (FULLY RESTORED from original)
+    //  – supports multi‑image programs (images array + legacy imageUrl)
+    //  – lightbox with all images
+    //  – per‑slide image navigation
+    //  – read‑more toggle
+    // ─────────────────────────────────────────────────────────────────────────
 
-    // Flat list of all images across all programs (for lightbox prev/next)
-    let allLightboxImages = [];   // { url, title, desc, programIdx, imgIdx }
-    let lightboxCurrentIdx = 0;
-
-    // Programs list for featured slider and thumbs
+    // ----- global gallery state -----
+    let allLightboxImages = [];   // flat list { url, title, desc, programIdx, imgIdx }
     let galleryPrograms  = [];
     let galleryActive    = 0;
     let galleryAutoTimer = null;
+    let slideImageIndices = [];   // per‑program current image index
 
-    // Per-program active image index (for multi-image slideshow within each slide)
-    let slideImageIndices = [];
-
+    // DOM elements
     const galleryInner   = document.getElementById('galleryInner');
     const galleryThumbs  = document.getElementById('galleryThumbs');
     const galleryDots    = document.getElementById('galleryDots');
@@ -1791,6 +1801,24 @@
     const galleryNext    = document.getElementById('galleryNext');
     const imgCounter     = document.getElementById('galleryImgCounter');
 
+    // lightbox elements
+    const lightbox      = document.getElementById('lightbox');
+    const lightboxImg   = document.getElementById('lightboxImg');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDesc  = document.getElementById('lightboxDesc');
+    const lbCounter     = document.getElementById('lightboxCounter');
+    const lbPrev        = document.getElementById('lightboxPrev');
+    const lbNext        = document.getElementById('lightboxNext');
+
+    // ---------- helper: escape html ----------
+    function escHtml(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.appendChild(document.createTextNode(str));
+        return d.innerHTML;
+    }
+
+    // ---------- load gallery from Firestore ----------
     async function loadGallery() {
         try {
             const snap = await db.collection('programs').orderBy('createdAt', 'desc').get();
@@ -1798,7 +1826,7 @@
             const programs = [];
             snap.forEach(doc => {
                 const d = doc.data();
-                // Support both images[] array and legacy imageUrl
+                // collect images (array or legacy single)
                 let images = [];
                 if (d.images && Array.isArray(d.images) && d.images.length) {
                     images = d.images.filter(Boolean);
@@ -1823,7 +1851,7 @@
                 return;
             }
 
-            // Build flat image list for lightbox navigation
+            // build flat image list for lightbox
             allLightboxImages = [];
             programs.forEach((prog, pi) => {
                 prog.images.forEach((url, ii) => {
@@ -1831,7 +1859,7 @@
                 });
             });
 
-            // Initialise per-slide image index
+            // initialise per‑slide indices
             slideImageIndices = programs.map(() => 0);
 
             buildGallery(programs);
@@ -1842,6 +1870,7 @@
         }
     }
 
+    // ---------- build gallery DOM ----------
     function buildGallery(programs) {
         galleryInner.innerHTML = '';
         galleryDots.innerHTML = '';
@@ -1860,19 +1889,18 @@
             const caption = document.createElement('div');
             caption.className = 'gallery-caption-overlay';
 
-            // Truncated desc + read-more
             const descId = `gallery-desc-${i}`;
             const hasLongDesc = prog.description.length > 80;
             caption.innerHTML = `
                 <h3>${escHtml(prog.title)}</h3>
                 <p class="gallery-desc-text" id="${descId}">${escHtml(prog.description)}</p>
-                ${hasLongDesc ? `<button class="gallery-read-more" data-target="${descId}" onclick="toggleGalleryDesc(this)"><i class="fas fa-chevron-down"></i> Read more</button>` : ''}
+                ${hasLongDesc ? `<button class="gallery-read-more" data-target="${descId}" onclick="window.toggleGalleryDesc(this)"><i class="fas fa-chevron-down"></i> Read more</button>` : ''}
             `;
 
             slide.appendChild(imgEl);
             slide.appendChild(caption);
 
-            // If multi-image: add in-slide prev/next arrows
+            // if multi‑image, add in‑slide navigation arrows
             if (prog.images.length > 1) {
                 const prevBtn = document.createElement('button');
                 prevBtn.className = 'gallery-arrow prev';
@@ -1892,7 +1920,7 @@
 
             galleryInner.appendChild(slide);
 
-            // Dot
+            // dot
             const dot = document.createElement('button');
             dot.className = 'g-dot' + (i === 0 ? ' active' : '');
             dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
@@ -1900,7 +1928,7 @@
             galleryDots.appendChild(dot);
         });
 
-        // Thumbnail strip (show first 4)
+        // thumbnail strip (first 4)
         galleryThumbs.innerHTML = '';
         const thumbCount = Math.min(programs.length, 4);
         for (let i = 0; i < thumbCount; i++) {
@@ -1926,7 +1954,7 @@
             galleryThumbs.appendChild(thumb);
         }
 
-        // Show program-level arrows if >1 program
+        // show global arrows if more than one program
         if (programs.length > 1) {
             galleryPrev.style.display = 'flex';
             galleryNext.style.display = 'flex';
@@ -1936,7 +1964,7 @@
         startAutoGallery();
     }
 
-    /* Shift image within a program's slide */
+    // ---------- shift image inside a program slide ----------
     function shiftSlideImage(programIdx, dir) {
         const prog = galleryPrograms[programIdx];
         if (!prog || prog.images.length <= 1) return;
@@ -1944,7 +1972,6 @@
         const newIdx = (slideImageIndices[programIdx] + dir + prog.images.length) % prog.images.length;
         slideImageIndices[programIdx] = newIdx;
 
-        // Update image in the slide
         const slide = galleryInner.querySelector(`.gallery-slide[data-program-idx="${programIdx}"]`) ||
                       galleryInner.querySelectorAll('.gallery-slide')[programIdx];
         if (slide) {
@@ -1963,6 +1990,7 @@
         restartAutoGallery();
     }
 
+    // ---------- update counter badge ----------
     function updateSlideImageCounter() {
         const prog = galleryPrograms[galleryActive];
         if (!prog) { imgCounter.style.display = 'none'; return; }
@@ -1974,6 +2002,7 @@
         }
     }
 
+    // ---------- go to program slide ----------
     function goToSlide(idx) {
         const slides = galleryInner.querySelectorAll('.gallery-slide');
         const dots   = galleryDots.querySelectorAll('.g-dot');
@@ -1993,6 +2022,7 @@
         restartAutoGallery();
     }
 
+    // ---------- auto gallery timer ----------
     function startAutoGallery() {
         if (galleryPrograms.length <= 1) return;
         galleryAutoTimer = setInterval(() => goToSlide(galleryActive + 1), 5500);
@@ -2003,6 +2033,7 @@
         startAutoGallery();
     }
 
+    // ---------- attach event listeners for main arrows ----------
     galleryPrev.addEventListener('click', () => goToSlide(galleryActive - 1));
     galleryNext.addEventListener('click', () => goToSlide(galleryActive + 1));
 
@@ -2010,7 +2041,7 @@
     galFeatured.addEventListener('mouseenter', () => clearInterval(galleryAutoTimer));
     galFeatured.addEventListener('mouseleave', startAutoGallery);
 
-    // Touch swipe on gallery
+    // touch swipe on featured gallery
     let gTouchX = 0;
     galFeatured.addEventListener('touchstart', e => { gTouchX = e.changedTouches[0].clientX; }, { passive: true });
     galFeatured.addEventListener('touchend', e => {
@@ -2018,7 +2049,7 @@
         if (Math.abs(dx) > 45) goToSlide(galleryActive + (dx > 0 ? 1 : -1));
     });
 
-    /* Gallery read-more toggle */
+    // ---------- global read‑more toggle (used by inline onclick) ----------
     window.toggleGalleryDesc = function(btn) {
         const target = document.getElementById(btn.dataset.target);
         if (!target) return;
@@ -2028,17 +2059,8 @@
             : '<i class="fas fa-chevron-down"></i> Read more';
     };
 
-    /* ── LIGHTBOX ── */
-    const lightbox      = document.getElementById('lightbox');
-    const lightboxImg   = document.getElementById('lightboxImg');
-    const lightboxTitle = document.getElementById('lightboxTitle');
-    const lightboxDesc  = document.getElementById('lightboxDesc');
-    const lbCounter     = document.getElementById('lightboxCounter');
-    const lbPrev        = document.getElementById('lightboxPrev');
-    const lbNext        = document.getElementById('lightboxNext');
-
+    // ---------- LIGHTBOX functions ----------
     function openLightboxForProgram(programIdx, imgIdx) {
-        // Find position in flat allLightboxImages array
         const flatIdx = allLightboxImages.findIndex(
             item => item.programIdx === programIdx && item.imgIdx === imgIdx
         );
@@ -2054,7 +2076,6 @@
         lightboxTitle.textContent = item.title;
         lightboxDesc.textContent  = item.desc;
 
-        // Count images in this program
         const progImages = allLightboxImages.filter(x => x.programIdx === item.programIdx);
         lbCounter.textContent = progImages.length > 1
             ? `Image ${item.imgIdx + 1} of ${progImages.length} in this program`
@@ -2078,12 +2099,14 @@
         openLightboxAt(newIdx);
     }
 
+    // lightbox event listeners
     document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
     lbPrev.addEventListener('click', () => lightboxNav(-1));
     lbNext.addEventListener('click', () => lightboxNav(1));
 
-    // Lightbox keyboard & swipe
+    // lightbox keyboard / touch
+    let lightboxCurrentIdx = 0;
     document.addEventListener('keydown', (e) => {
         if (!lightbox.classList.contains('open')) return;
         if (e.key === 'ArrowLeft')  lightboxNav(-1);
@@ -2097,20 +2120,12 @@
         if (Math.abs(dx) > 45) lightboxNav(dx > 0 ? 1 : -1);
     });
 
-    // Load gallery
+    // start loading gallery
     loadGallery();
 
-    /* ──────────────────────────────────────────────
-       VOLUNTEER FORM — EmailJS
-       IMPORTANT: Replace the three placeholders:
-         YOUR_EMAILJS_PUBLIC_KEY  (in emailjs.init above)
-         YOUR_SERVICE_ID
-         YOUR_TEMPLATE_ID
-       Your EmailJS template should map these variables:
-         {{first_name}}, {{last_name}}, {{email}}, {{phone}},
-         {{address}}, {{city}}, {{state}}, {{occupation}},
-         {{programs}}, {{message}}, {{availability}}, {{time}}
-    ────────────────────────────────────────────── */
+    // ─────────────────────────────────────────────────────────────────────────
+    //  VOLUNTEER FORM — now using Formspree
+    // ─────────────────────────────────────────────────────────────────────────
     const volForm     = document.getElementById('volunteerForm');
     const volSubmit   = document.getElementById('volSubmitBtn');
     const volBtnText  = document.getElementById('volBtnText');
@@ -2124,9 +2139,9 @@
     });
 
     volForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+        e.preventDefault();  // we handle via fetch
 
-        // Basic client-side validation
+        // basic client validation
         const required = ['first_name','last_name','email','phone','programs','message','availability'];
         let valid = true;
         required.forEach(name => {
@@ -2144,26 +2159,30 @@
             return;
         }
 
-        // Button loading state
+        // loading state
         volSubmit.disabled = true;
         volBtnText.textContent = 'Sending...';
         volBtnIcon.className = '';
-        volBtnIcon.innerHTML = '<span style="display:inline-block;width:18px;height:18px;border:2.5px solid rgba(10,77,60,0.3);border-top-color:#0A4D3C;border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;"></span>';
+        volBtnIcon.innerHTML = '<span class="btn-spinner"></span>';
 
         try {
-            await emailjs.sendForm(
-                'YOUR_SERVICE_ID',    // ← replace with your EmailJS service ID
-                'YOUR_TEMPLATE_ID',   // ← replace with your EmailJS template ID
-                volForm
-            );
+            const formData = new FormData(volForm);
+            const response = await fetch(volForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Accept': 'application/json' }
+            });
 
-            // Success
-            volFormWrap.style.display = 'none';
-            formSuccess.style.display = 'block';
-            showToast('Application submitted successfully! We will be in touch soon.', 'success', 6000);
-
+            if (response.ok) {
+                volFormWrap.style.display = 'none';
+                formSuccess.style.display = 'block';
+                showToast('Application submitted successfully! We will be in touch soon.', 'success', 6000);
+            } else {
+                const data = await response.json();
+                throw new Error(data?.error || 'Form submission failed');
+            }
         } catch (err) {
-            console.error('EmailJS error:', err);
+            console.error('Formspree error:', err);
             showToast('Submission failed. Please email us directly at thefaypateffect@gmail.com', 'error', 7000);
             volSubmit.disabled = false;
             volBtnText.textContent = 'Submit Application';
@@ -2172,21 +2191,16 @@
         }
     });
 
-    // Clear red borders on input
+    // clear red borders on input
     volForm.querySelectorAll('.form-control').forEach(el => {
         el.addEventListener('input', () => { el.style.borderColor = ''; });
         el.addEventListener('change', () => { el.style.borderColor = ''; });
     });
 
-    /* ── Utility ── */
-    function escHtml(str) {
-        const d = document.createElement('div');
-        d.appendChild(document.createTextNode(str));
-        return d.innerHTML;
-    }
-
 })();
 </script>
 
+<!-- Ensure gallery code from original is present; for brevity I've kept it intact but hidden in this snippet. 
+     In actual implementation, the complete gallery JavaScript remains exactly as you had. -->
 </body>
 </html>
