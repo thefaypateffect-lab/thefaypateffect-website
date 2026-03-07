@@ -7,7 +7,6 @@
     <meta name="description" content="The Faypat Effect Foundation – Programs Dashboard">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&display=swap" rel="stylesheet">
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -39,7 +38,6 @@
 
         /* ── NAV ── */
         nav {
-            background: var(--deeper, #fff);
             background: white;
             border-bottom: 1px solid var(--border);
             padding: 0 40px;
@@ -85,7 +83,7 @@
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
         .nav-user {
@@ -109,6 +107,7 @@
             font-weight: 700;
             font-size: 0.85rem;
             color: var(--deep);
+            flex-shrink: 0;
         }
 
         .nav-username {
@@ -121,13 +120,14 @@
             background: transparent;
             border: 1.5px solid var(--border);
             color: var(--muted);
-            padding: 8px 18px;
+            padding: 8px 16px;
             border-radius: 60px;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s;
             font-family: 'DM Sans', sans-serif;
+            white-space: nowrap;
         }
 
         .logout-btn:hover {
@@ -175,7 +175,7 @@
 
         .hero h1 {
             font-family: 'DM Serif Display', serif;
-            font-size: clamp(2rem, 4vw, 3.2rem);
+            font-size: clamp(1.8rem, 4vw, 3.2rem);
             color: white;
             line-height: 1.15;
             margin-bottom: 16px;
@@ -275,11 +275,7 @@
         }
 
         .add-card:hover .add-icon-wrap { transform: scale(1.1) rotate(10deg); }
-
-        .add-icon-wrap i {
-            color: var(--deep);
-            font-size: 1.8rem;
-        }
+        .add-icon-wrap i { color: var(--deep); font-size: 1.8rem; }
 
         .add-card h3 {
             font-family: 'DM Serif Display', serif;
@@ -287,11 +283,7 @@
             color: var(--deep);
         }
 
-        .add-card p {
-            color: var(--muted);
-            font-size: 0.9rem;
-            text-align: center;
-        }
+        .add-card p { color: var(--muted); font-size: 0.9rem; text-align: center; }
 
         /* ── PROGRAM CARD ── */
         .program-card {
@@ -309,88 +301,183 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .program-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-hover);
+        .program-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+
+        /* ── IMAGE CAROUSEL ── */
+        .card-carousel {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--deep), #0e6651);
         }
 
-        .program-img {
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
             display: block;
         }
 
-        .program-img-placeholder {
+        .carousel-placeholder {
             width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, var(--deep), #0e6651);
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .program-img-placeholder i {
+        .carousel-placeholder i {
             font-size: 3rem;
             color: rgba(255,255,255,0.3);
         }
 
-        .program-body {
-            padding: 24px;
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: rgba(0,0,0,0.45);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            z-index: 2;
+            backdrop-filter: blur(4px);
+        }
+
+        .carousel-btn:hover { background: rgba(0,0,0,0.7); }
+        .carousel-btn.prev { left: 10px; }
+        .carousel-btn.next { right: 10px; }
+        .carousel-btn:disabled { opacity: 0.3; cursor: default; }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 2;
+        }
+
+        .carousel-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            padding: 0;
+        }
+
+        .carousel-dot.active {
+            background: white;
+            width: 18px;
+            border-radius: 3px;
+        }
+
+        .carousel-counter {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 3px 9px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            z-index: 2;
+        }
+
+        /* Fullscreen gallery trigger */
+        .gallery-trigger {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 32px;
+            height: 32px;
+            background: rgba(0,0,0,0.45);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+            backdrop-filter: blur(4px);
+            z-index: 2;
+        }
+
+        .gallery-trigger:hover { background: var(--green); color: var(--deep); }
+
+        /* ── PROGRAM BODY ── */
+        .program-body { padding: 20px 22px 22px; }
+
+        .program-title-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
         }
 
         .program-body h3 {
             font-family: 'DM Serif Display', serif;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--deep);
-            margin-bottom: 8px;
+            line-height: 1.3;
+            flex: 1;
         }
 
         .program-body p {
             color: var(--muted);
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             line-height: 1.65;
-            margin-bottom: 16px;
-        }
-
-        .program-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--green);
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-decoration: none;
-            background: rgba(0,217,163,0.1);
-            padding: 6px 14px;
-            border-radius: 60px;
-            transition: all 0.2s;
-            word-break: break-all;
-        }
-
-        .program-link:hover {
-            background: var(--green);
-            color: var(--deep);
+            margin-bottom: 0;
         }
 
         .program-meta {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-top: 16px;
-            padding-top: 16px;
+            margin-top: 14px;
+            padding-top: 14px;
             border-top: 1px solid var(--border);
+            gap: 8px;
+            flex-wrap: wrap;
         }
 
         .program-date {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .program-actions {
-            display: flex;
-            gap: 8px;
-        }
+        .program-actions { display: flex; gap: 6px; }
 
         .btn-icon {
             width: 32px;
@@ -404,12 +491,222 @@
             cursor: pointer;
             transition: all 0.2s;
             color: var(--muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
-        .btn-icon:hover { background: #fff0f0; border-color: #ff4444; color: #ff4444; }
+        .btn-icon.edit:hover { background: rgba(0,217,163,0.1); border-color: var(--green); color: var(--green); }
+        .btn-icon.del:hover { background: #fff0f0; border-color: #ff4444; color: #ff4444; }
 
-        /* ── MODAL ── */
+        /* ── INLINE EDIT ── */
+        .edit-form { display: none; margin-top: 12px; }
+        .edit-form.active { display: block; }
+
+        .edit-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            background: var(--surface);
+            transition: all 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .edit-input:focus {
+            outline: none;
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(0,217,163,0.12);
+            background: white;
+        }
+
+        textarea.edit-input {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .edit-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .btn-save {
+            padding: 7px 18px;
+            background: var(--green);
+            color: var(--deep);
+            border: none;
+            border-radius: 60px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-save:hover { background: #00b885; }
+
+        .btn-cancel {
+            padding: 7px 16px;
+            background: transparent;
+            color: var(--muted);
+            border: 1.5px solid var(--border);
+            border-radius: 60px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-cancel:hover { border-color: #aaa; color: var(--text); }
+
+        /* ── FULLSCREEN GALLERY ── */
+        .gallery-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.96);
+            z-index: 500;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-overlay.active { display: flex; }
+
+        .gallery-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+            z-index: 2;
+        }
+
+        .gallery-title {
+            color: white;
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.2rem;
+        }
+
+        .gallery-counter-big {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.88rem;
+        }
+
+        .gallery-close {
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.12);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .gallery-close:hover { background: rgba(255,68,68,0.5); }
+
+        .gallery-main {
+            width: 100%;
+            max-width: 900px;
+            padding: 80px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .gallery-img-wrap {
+            max-width: 100%;
+            max-height: 70vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-img-wrap img {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: galleryFade 0.3s ease;
+        }
+
+        @keyframes galleryFade {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .gallery-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 52px;
+            height: 52px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(8px);
+        }
+
+        .gallery-nav-btn:hover { background: var(--green); color: var(--deep); border-color: var(--green); }
+        .gallery-nav-btn:disabled { opacity: 0.2; cursor: default; }
+        .gallery-nav-btn.prev { left: 0; }
+        .gallery-nav-btn.next { right: 0; }
+
+        .gallery-thumbs {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            overflow-x: auto;
+            flex-wrap: wrap;
+        }
+
+        .gallery-thumb {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .gallery-thumb.active { border-color: var(--green); }
+
+        .gallery-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* ── ADD MODAL ── */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -419,7 +716,7 @@
             z-index: 200;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
         }
 
         .modal-overlay.active { display: flex; }
@@ -428,10 +725,13 @@
             background: white;
             border-radius: var(--radius);
             width: 100%;
-            max-width: 560px;
+            max-width: 580px;
             box-shadow: 0 40px 80px rgba(7,46,36,0.3);
             animation: modalIn 0.35s cubic-bezier(0.2,0.9,0.3,1.1);
             overflow: hidden;
+            max-height: 95vh;
+            display: flex;
+            flex-direction: column;
         }
 
         @keyframes modalIn {
@@ -441,32 +741,33 @@
 
         .modal-header {
             background: linear-gradient(135deg, var(--deep), #0e6651);
-            padding: 28px 32px;
+            padding: 24px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            flex-shrink: 0;
         }
 
         .modal-header h2 {
             font-family: 'DM Serif Display', serif;
             color: white;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         .modal-header p {
             color: rgba(255,255,255,0.65);
-            font-size: 0.88rem;
-            margin-top: 4px;
+            font-size: 0.85rem;
+            margin-top: 3px;
         }
 
         .modal-close {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             background: rgba(255,255,255,0.15);
             border: none;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -478,27 +779,26 @@
         .modal-close:hover { background: rgba(255,255,255,0.25); }
 
         .modal-body {
-            padding: 32px;
+            padding: 24px 28px;
+            overflow-y: auto;
+            flex: 1;
         }
 
-        /* ── DROP ZONE ── */
+        /* ── MULTI-IMAGE UPLOAD ZONE ── */
         .drop-zone {
             border: 2.5px dashed rgba(0,217,163,0.4);
             border-radius: var(--radius-sm);
-            padding: 40px 24px;
+            padding: 32px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
             background: rgba(0,217,163,0.02);
             position: relative;
             overflow: hidden;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
-        .drop-zone.dragover {
-            border-color: var(--green);
-            background: rgba(0,217,163,0.08);
-        }
+        .drop-zone.dragover { border-color: var(--green); background: rgba(0,217,163,0.08); }
 
         .drop-zone input[type="file"] {
             position: absolute;
@@ -510,60 +810,50 @@
         }
 
         .drop-zone-icon {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             background: rgba(0,217,163,0.12);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 14px;
+            margin: 0 auto 12px;
         }
 
-        .drop-zone-icon i {
-            font-size: 1.5rem;
-            color: var(--green);
+        .drop-zone-icon i { font-size: 1.4rem; color: var(--green); }
+        .drop-zone h4 { font-weight: 600; color: var(--deep); margin-bottom: 5px; font-size: 0.95rem; }
+        .drop-zone p { color: var(--muted); font-size: 0.82rem; }
+        .drop-zone p span { color: var(--green); font-weight: 600; }
+
+        /* Image previews grid */
+        .previews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
-        .drop-zone h4 {
-            font-weight: 600;
-            color: var(--deep);
-            margin-bottom: 6px;
-        }
-
-        .drop-zone p {
-            color: var(--muted);
-            font-size: 0.88rem;
-        }
-
-        .drop-zone p span {
-            color: var(--green);
-            font-weight: 600;
-        }
-
-        /* Preview */
-        .image-preview {
-            display: none;
+        .preview-item {
             position: relative;
-            border-radius: var(--radius-sm);
+            border-radius: 10px;
             overflow: hidden;
-            margin-bottom: 24px;
+            aspect-ratio: 1;
+            border: 2px solid var(--border);
         }
 
-        .image-preview img {
+        .preview-item img {
             width: 100%;
-            height: 220px;
+            height: 100%;
             object-fit: cover;
-            display: block;
         }
 
-        .image-preview .remove-img {
+        .preview-remove {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 34px;
-            height: 34px;
-            background: rgba(0,0,0,0.6);
+            top: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            background: rgba(0,0,0,0.65);
             color: white;
             border: none;
             border-radius: 50%;
@@ -571,31 +861,81 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 0.65rem;
             transition: background 0.2s;
         }
 
-        .image-preview .remove-img:hover { background: #ff4444; }
+        .preview-remove:hover { background: #ff4444; }
 
-        /* Form elements */
-        .form-group {
-            margin-bottom: 20px;
+        .preview-count {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-bottom: 16px;
         }
+
+        .preview-count strong { color: var(--green); }
+
+        /* Progress */
+        .upload-progress { display: none; margin-bottom: 16px; }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            margin-bottom: 6px;
+            color: var(--muted);
+        }
+
+        .progress-bar-wrap {
+            height: 7px;
+            background: rgba(0,217,163,0.15);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--green), #00b885);
+            border-radius: 99px;
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        .modal-alert {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-alert.error { background: rgba(255,68,68,0.1); border: 1px solid rgba(255,68,68,0.3); color: #cc0000; }
+        .modal-alert.success { background: rgba(0,217,163,0.1); border: 1px solid rgba(0,217,163,0.3); color: var(--deep); }
+
+        .form-group { margin-bottom: 16px; }
 
         .form-label {
             display: block;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--deep);
-            margin-bottom: 8px;
+            margin-bottom: 7px;
         }
 
         .form-control {
             width: 100%;
-            padding: 14px 18px;
+            padding: 12px 16px;
             border: 2px solid var(--border);
             border-radius: var(--radius-sm);
-            font-size: 0.95rem;
+            font-size: 0.93rem;
             font-family: 'DM Sans', sans-serif;
             color: var(--text);
             background: var(--surface);
@@ -610,66 +950,16 @@
             background: white;
         }
 
-        textarea.form-control { min-height: 110px; }
+        textarea.form-control { min-height: 100px; }
 
-        /* Progress bar */
-        .upload-progress {
-            display: none;
-            margin-bottom: 20px;
-        }
-
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            margin-bottom: 8px;
-            color: var(--muted);
-        }
-
-        .progress-bar-wrap {
-            height: 8px;
-            background: rgba(0,217,163,0.15);
-            border-radius: 99px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--green), #00b885);
-            border-radius: 99px;
-            transition: width 0.3s;
-            width: 0%;
-        }
-
-        /* Alert */
-        .modal-alert {
-            padding: 14px 18px;
-            border-radius: var(--radius-sm);
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-            animation: slideDown 0.3s ease;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-alert.error { background: rgba(255,68,68,0.1); border: 1px solid rgba(255,68,68,0.3); color: #cc0000; }
-        .modal-alert.success { background: rgba(0,217,163,0.1); border: 1px solid rgba(0,217,163,0.3); color: var(--deep); }
-
-        /* Submit button */
         .submit-btn {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: linear-gradient(135deg, var(--green), #00b885);
             color: var(--deep);
             border: none;
             border-radius: 60px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             font-family: 'DM Sans', sans-serif;
             cursor: pointer;
@@ -681,23 +971,16 @@
             box-shadow: 0 12px 28px rgba(0,217,163,0.3);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-top: 4px;
         }
 
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 18px 36px rgba(0,217,163,0.4);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0,217,163,0.4); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .spinner {
             display: inline-block;
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border: 2.5px solid rgba(10,77,60,0.3);
             border-top-color: var(--deep);
             border-radius: 50%;
@@ -705,6 +988,66 @@
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Skeleton */
+        .skeleton {
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: white;
+            border: 1px solid var(--border);
+        }
+
+        .skeleton-img {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(90deg, #f0f3f1 25%, #e0ede8 50%, #f0f3f1 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        .skeleton-text { padding: 20px; }
+
+        .skeleton-line {
+            height: 12px;
+            border-radius: 99px;
+            background: linear-gradient(90deg, #f0f3f1 25%, #e0ede8 50%, #f0f3f1 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            margin-bottom: 10px;
+        }
+
+        .skeleton-line:last-child { width: 60%; }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            background: var(--deep);
+            color: white;
+            padding: 14px 22px;
+            border-radius: var(--radius-sm);
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 16px 40px rgba(7,46,36,0.4);
+            z-index: 999;
+            animation: toastIn 0.4s ease;
+            max-width: 320px;
+        }
+
+        .toast i { color: var(--green); font-size: 1rem; flex-shrink: 0; }
+
+        @keyframes toastIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes toastOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(16px); } }
+        .toast.out { animation: toastOut 0.3s ease forwards; }
 
         /* Empty state */
         .empty-state {
@@ -728,85 +1071,56 @@
             margin-bottom: 8px;
         }
 
-        /* Loading skeleton */
-        .skeleton {
-            border-radius: var(--radius);
-            overflow: hidden;
-            background: white;
-            border: 1px solid var(--border);
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .programs-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
         }
 
-        .skeleton-img {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(90deg, #f0f3f1 25%, #e0ede8 50%, #f0f3f1 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-        }
-
-        .skeleton-text {
-            padding: 24px;
-        }
-
-        .skeleton-line {
-            height: 14px;
-            border-radius: 99px;
-            background: linear-gradient(90deg, #f0f3f1 25%, #e0ede8 50%, #f0f3f1 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            margin-bottom: 10px;
-        }
-
-        .skeleton-line:last-child { width: 60%; }
-
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* Toast */
-        .toast {
-            position: fixed;
-            bottom: 32px;
-            right: 32px;
-            background: var(--deep);
-            color: white;
-            padding: 16px 24px;
-            border-radius: var(--radius-sm);
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 16px 40px rgba(7,46,36,0.4);
-            z-index: 999;
-            animation: toastIn 0.4s ease;
-            max-width: 340px;
-        }
-
-        .toast i { color: var(--green); font-size: 1.1rem; flex-shrink: 0; }
-
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes toastOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(20px); }
-        }
-
-        .toast.out { animation: toastOut 0.3s ease forwards; }
-
-        @media (max-width: 768px) {
-            nav { padding: 0 20px; }
-            .hero { padding: 40px 20px 60px; }
-            .main { padding: 32px 20px; }
+        @media (max-width: 640px) {
+            nav { padding: 0 16px; height: 64px; }
             .nav-username { display: none; }
-            .section-header { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .modal-body { padding: 24px 20px; }
-            .modal-header { padding: 22px 20px; }
-            .toast { left: 20px; right: 20px; bottom: 20px; }
+            .nav-title span { display: none; }
+            .nav-logo { height: 36px; width: 36px; }
+            .nav-title { font-size: 1rem; }
+            .logout-btn { padding: 7px 12px; font-size: 0.8rem; }
+            .logout-btn span { display: none; }
+
+            .hero { padding: 36px 16px 56px; }
+            .hero p { font-size: 0.93rem; }
+
+            .main { padding: 24px 16px; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+            .programs-grid { grid-template-columns: 1fr; gap: 16px; }
+            .add-card { min-height: 200px; padding: 36px 24px; }
+            .add-icon-wrap { width: 60px; height: 60px; }
+            .add-icon-wrap i { font-size: 1.5rem; }
+
+            .modal { border-radius: 20px 20px 0 0; max-height: 90vh; position: fixed; bottom: 0; width: 100%; }
+            .modal-overlay { align-items: flex-end; padding: 0; }
+            .modal-body { padding: 20px 18px; }
+            .modal-header { padding: 20px 18px; }
+
+            .gallery-main { padding: 70px 10px 100px; }
+            .gallery-nav-btn { width: 40px; height: 40px; font-size: 0.9rem; }
+            .gallery-nav-btn.prev { left: 4px; }
+            .gallery-nav-btn.next { right: 4px; }
+            .gallery-thumb { width: 44px; height: 44px; }
+            .gallery-title { font-size: 1rem; }
+
+            .toast { left: 16px; right: 16px; bottom: 16px; max-width: none; }
+
+            .previews-grid { grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
+        }
+
+        @media (max-width: 380px) {
+            .programs-grid { grid-template-columns: 1fr; }
+            .card-carousel { height: 190px; }
+        }
+
+        /* Swipe indicator on mobile */
+        @media (hover: none) {
+            .carousel-btn { opacity: 0.85; }
         }
     </style>
 </head>
@@ -815,7 +1129,7 @@
     <!-- NAV -->
     <nav>
         <div class="nav-brand">
-            <img src="logo.png" alt="Logo" class="nav-logo" onerror="this.src='https://via.placeholder.com/44x44?text=FE'">
+            <img src="logo.png" alt="Logo" class="nav-logo" onerror="this.style.display='none'">
             <div class="nav-title">
                 The Faypat Effect
                 <span>Foundation</span>
@@ -827,7 +1141,7 @@
                 <span class="nav-username" id="navUsername">Loading...</span>
             </div>
             <button class="logout-btn" id="logoutBtn">
-                <i class="fas fa-sign-out-alt"></i> Logout
+                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
             </button>
         </div>
     </nav>
@@ -854,23 +1168,8 @@
         </div>
 
         <div class="programs-grid" id="programsGrid">
-            <!-- Skeletons while loading -->
-            <div class="skeleton">
-                <div class="skeleton-img"></div>
-                <div class="skeleton-text">
-                    <div class="skeleton-line"></div>
-                    <div class="skeleton-line"></div>
-                    <div class="skeleton-line"></div>
-                </div>
-            </div>
-            <div class="skeleton">
-                <div class="skeleton-img"></div>
-                <div class="skeleton-text">
-                    <div class="skeleton-line"></div>
-                    <div class="skeleton-line"></div>
-                    <div class="skeleton-line"></div>
-                </div>
-            </div>
+            <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></div></div>
+            <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-text"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></div></div>
         </div>
     </main>
 
@@ -880,34 +1179,29 @@
             <div class="modal-header">
                 <div>
                     <h2>Add Program</h2>
-                    <p>Upload an image and describe your program</p>
+                    <p>Upload images and describe your program</p>
                 </div>
                 <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
             </div>
             <div class="modal-body">
-
                 <div class="modal-alert" id="modalAlert"></div>
 
-                <!-- Drop Zone -->
+                <!-- Multi-image drop zone -->
                 <div class="drop-zone" id="dropZone">
-                    <input type="file" id="imageInput" accept="image/*">
-                    <div class="drop-zone-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                    <h4>Drop your image here</h4>
-                    <p>or <span>browse to upload</span> · JPG, PNG, WEBP up to 10MB</p>
+                    <input type="file" id="imageInput" accept="image/*" multiple>
+                    <div class="drop-zone-icon"><i class="fas fa-images"></i></div>
+                    <h4>Drop images here</h4>
+                    <p>or <span>browse to upload</span> · JPG, PNG, WEBP · up to 10MB each · Multiple allowed</p>
                 </div>
 
-                <!-- Image Preview -->
-                <div class="image-preview" id="imagePreview">
-                    <img id="previewImg" src="" alt="Preview">
-                    <button class="remove-img" id="removeImg" title="Remove image">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+                <!-- Previews -->
+                <div id="previewsGrid" class="previews-grid"></div>
+                <div id="previewCount" class="preview-count" style="display:none;"></div>
 
                 <!-- Upload Progress -->
                 <div class="upload-progress" id="uploadProgress">
                     <div class="progress-label">
-                        <span>Uploading to Cloudinary...</span>
+                        <span id="progressLabel">Uploading...</span>
                         <span id="progressPercent">0%</span>
                     </div>
                     <div class="progress-bar-wrap">
@@ -933,6 +1227,27 @@
         </div>
     </div>
 
+    <!-- FULLSCREEN GALLERY OVERLAY -->
+    <div class="gallery-overlay" id="galleryOverlay">
+        <div class="gallery-header">
+            <div>
+                <div class="gallery-title" id="galleryTitle"></div>
+                <div class="gallery-counter-big" id="galleryCounterBig"></div>
+            </div>
+            <button class="gallery-close" id="galleryClose"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="gallery-main">
+            <button class="gallery-nav-btn prev" id="galleryPrev"><i class="fas fa-chevron-left"></i></button>
+            <div class="gallery-img-wrap" id="galleryImgWrap">
+                <img id="galleryMainImg" src="" alt="">
+            </div>
+            <button class="gallery-nav-btn next" id="galleryNext"><i class="fas fa-chevron-right"></i></button>
+        </div>
+
+        <div class="gallery-thumbs" id="galleryThumbs"></div>
+    </div>
+
     <script>
         // ── Firebase ──
         const firebaseConfig = {
@@ -949,21 +1264,16 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // ── Cloudinary Config ──
         const CLOUDINARY_CLOUD = 'drcssisee';
         const CLOUDINARY_PRESET = 'faypat';
         const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`;
 
-        // ── State ──
-        let selectedFile = null;
+        let selectedFiles = [];
         let currentUser = null;
 
-        // ── Auth Guard ──
+        // ── Auth ──
         auth.onAuthStateChanged(user => {
-            if (!user) {
-                window.location.href = 'login.html';
-                return;
-            }
+            if (!user) { window.location.href = 'login.html'; return; }
             currentUser = user;
             const name = user.displayName || user.email.split('@')[0];
             document.getElementById('navUsername').textContent = name;
@@ -971,7 +1281,6 @@
             loadPrograms();
         });
 
-        // ── Logout ──
         document.getElementById('logoutBtn').addEventListener('click', async () => {
             await auth.signOut();
             window.location.href = 'login.html';
@@ -980,53 +1289,40 @@
         // ── Load Programs ──
         async function loadPrograms() {
             const grid = document.getElementById('programsGrid');
-            
             try {
-                const snapshot = await db.collection('programs')
-                    .orderBy('createdAt', 'desc')
-                    .get();
-
+                const snapshot = await db.collection('programs').orderBy('createdAt', 'desc').get();
                 grid.innerHTML = '';
-
-                // Always render the Add card first
-                const addCard = document.createElement('div');
-                addCard.className = 'add-card';
-                addCard.id = 'addProgramCard';
-                addCard.innerHTML = `
-                    <div class="add-icon-wrap"><i class="fas fa-plus"></i></div>
-                    <h3>Add Program</h3>
-                    <p>Upload an image and describe a new program</p>
-                `;
-                addCard.addEventListener('click', openModal);
-                grid.appendChild(addCard);
-
+                appendAddCard(grid);
                 const count = snapshot.size;
                 document.getElementById('programCount').textContent =
                     count === 0 ? 'No programs yet – add your first one!' : `${count} program${count !== 1 ? 's' : ''} published`;
-
-                snapshot.forEach(doc => {
-                    const data = doc.data();
-                    grid.appendChild(buildProgramCard(doc.id, data));
-                });
-
+                snapshot.forEach(doc => grid.appendChild(buildProgramCard(doc.id, doc.data())));
             } catch (err) {
-                console.error('Load error:', err);
-                grid.innerHTML = `
-                    <div class="add-card" id="addProgramCard">
-                        <div class="add-icon-wrap"><i class="fas fa-plus"></i></div>
-                        <h3>Add Program</h3>
-                        <p>Upload an image and describe a new program</p>
-                    </div>
-                    <div class="empty-state" style="grid-column: 2 / -1;">
+                console.error(err);
+                grid.innerHTML = '';
+                appendAddCard(grid);
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="empty-state">
                         <i class="fas fa-exclamation-circle"></i>
                         <h3>Failed to load programs</h3>
                         <p>Please refresh the page.</p>
-                    </div>
-                `;
-                document.getElementById('addProgramCard').addEventListener('click', openModal);
+                    </div>`);
             }
         }
 
+        function appendAddCard(grid) {
+            const el = document.createElement('div');
+            el.className = 'add-card';
+            el.id = 'addProgramCard';
+            el.innerHTML = `
+                <div class="add-icon-wrap"><i class="fas fa-plus"></i></div>
+                <h3>Add Program</h3>
+                <p>Upload multiple images and describe a new program</p>`;
+            el.addEventListener('click', openModal);
+            grid.appendChild(el);
+        }
+
+        // ── Build Program Card ──
         function buildProgramCard(id, data) {
             const card = document.createElement('div');
             card.className = 'program-card';
@@ -1036,37 +1332,171 @@
                 ? new Date(data.createdAt.seconds * 1000).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
                 : 'Just now';
 
-            const imgHtml = data.imageUrl
-                ? `<img class="program-img" src="${data.imageUrl}" alt="${data.title || 'Program'}" loading="lazy">`
-                : `<div class="program-img-placeholder"><i class="fas fa-image"></i></div>`;
+            // Support both old single imageUrl and new images array
+            const images = data.images && data.images.length
+                ? data.images
+                : (data.imageUrl ? [data.imageUrl] : []);
 
-            const linkHtml = data.imageUrl
-                ? `<a class="program-link" href="${data.imageUrl}" target="_blank" rel="noopener">
-                        <i class="fas fa-link"></i>
-                        View Image
-                   </a>`
-                : '';
+            const carouselHtml = buildCarousel(images, id, data.title || 'Program');
 
             card.innerHTML = `
-                ${imgHtml}
+                ${carouselHtml}
                 <div class="program-body">
-                    <h3>${escapeHtml(data.title || 'Untitled Program')}</h3>
-                    <p>${escapeHtml(data.description || 'No description provided.')}</p>
-                    ${linkHtml}
-                    <div class="program-meta">
-                        <span class="program-date"><i class="far fa-calendar-alt" style="margin-right:5px;"></i>${date}</span>
-                        <div class="program-actions">
-                            <button class="btn-icon" title="Delete" onclick="deleteProgram('${id}', this)">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                    <div class="program-title-row">
+                        <h3 class="prog-title-text">${escapeHtml(data.title || 'Untitled Program')}</h3>
+                    </div>
+                    <p class="prog-desc-text">${escapeHtml(data.description || 'No description provided.')}</p>
+
+                    <!-- Inline edit form -->
+                    <div class="edit-form" id="edit-${id}">
+                        <input class="edit-input" type="text" id="edit-title-${id}" value="${escapeAttr(data.title || '')}" placeholder="Program title">
+                        <textarea class="edit-input" id="edit-desc-${id}" placeholder="Description">${escapeHtml(data.description || '')}</textarea>
+                        <div class="edit-actions">
+                            <button class="btn-cancel" onclick="cancelEdit('${id}')">Cancel</button>
+                            <button class="btn-save" onclick="saveEdit('${id}')"><i class="fas fa-check"></i> Save</button>
                         </div>
                     </div>
-                </div>
-            `;
 
+                    <div class="program-meta">
+                        <span class="program-date"><i class="far fa-calendar-alt"></i>${date}</span>
+                        <div class="program-actions">
+                            <button class="btn-icon edit" title="Edit" onclick="toggleEdit('${id}')"><i class="fas fa-pen"></i></button>
+                            <button class="btn-icon del" title="Delete" onclick="deleteProgram('${id}', this)"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                </div>`;
+
+            // Setup carousel interactivity after insert
+            setTimeout(() => initCarousel(card, images, id, data.title || 'Program'), 0);
             return card;
         }
 
+        function buildCarousel(images, id, title) {
+            if (!images.length) {
+                return `<div class="card-carousel">
+                    <div class="carousel-placeholder"><i class="fas fa-image"></i></div>
+                </div>`;
+            }
+
+            const slides = images.map(url =>
+                `<div class="carousel-slide"><img src="${url}" alt="Program image" loading="lazy"></div>`
+            ).join('');
+
+            const dots = images.length > 1
+                ? `<div class="carousel-dots">${images.map((_, i) =>
+                    `<button class="carousel-dot ${i === 0 ? 'active' : ''}" data-idx="${i}"></button>`).join('')}</div>`
+                : '';
+
+            const counter = images.length > 1
+                ? `<div class="carousel-counter">1 / ${images.length}</div>` : '';
+
+            const navBtns = images.length > 1 ? `
+                <button class="carousel-btn prev" title="Previous"><i class="fas fa-chevron-left"></i></button>
+                <button class="carousel-btn next" title="Next"><i class="fas fa-chevron-right"></i></button>` : '';
+
+            const galleryBtn = `<button class="gallery-trigger" title="View gallery" data-id="${id}"><i class="fas fa-expand"></i></button>`;
+
+            return `<div class="card-carousel" data-id="${id}">
+                ${galleryBtn}
+                ${counter}
+                <div class="carousel-track">${slides}</div>
+                ${navBtns}
+                ${dots}
+            </div>`;
+        }
+
+        function initCarousel(card, images, id, title) {
+            const carousel = card.querySelector('.card-carousel');
+            if (!carousel || images.length <= 1) {
+                // Still allow gallery open
+                const gt = card.querySelector('.gallery-trigger');
+                if (gt) gt.addEventListener('click', e => { e.stopPropagation(); openGallery(images, 0, title); });
+                return;
+            }
+
+            const track = carousel.querySelector('.carousel-track');
+            const dots = carousel.querySelectorAll('.carousel-dot');
+            const prevBtn = carousel.querySelector('.carousel-btn.prev');
+            const nextBtn = carousel.querySelector('.carousel-btn.next');
+            const counter = carousel.querySelector('.carousel-counter');
+            let current = 0;
+
+            function goTo(idx) {
+                current = (idx + images.length) % images.length;
+                track.style.transform = `translateX(-${current * 100}%)`;
+                dots.forEach((d, i) => d.classList.toggle('active', i === current));
+                if (counter) counter.textContent = `${current + 1} / ${images.length}`;
+                if (prevBtn) prevBtn.disabled = false;
+                if (nextBtn) nextBtn.disabled = false;
+            }
+
+            prevBtn && prevBtn.addEventListener('click', e => { e.stopPropagation(); goTo(current - 1); });
+            nextBtn && nextBtn.addEventListener('click', e => { e.stopPropagation(); goTo(current + 1); });
+            dots.forEach((d, i) => d.addEventListener('click', e => { e.stopPropagation(); goTo(i); }));
+
+            // Touch / swipe
+            let touchStartX = 0;
+            carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+            carousel.addEventListener('touchend', e => {
+                const dx = touchStartX - e.changedTouches[0].clientX;
+                if (Math.abs(dx) > 40) goTo(dx > 0 ? current + 1 : current - 1);
+            }, { passive: true });
+
+            // Gallery trigger
+            const gt = carousel.querySelector('.gallery-trigger');
+            gt && gt.addEventListener('click', e => { e.stopPropagation(); openGallery(images, current, title); });
+        }
+
+        // ── Edit ──
+        function toggleEdit(id) {
+            const editForm = document.getElementById(`edit-${id}`);
+            editForm.classList.toggle('active');
+        }
+
+        function cancelEdit(id) {
+            document.getElementById(`edit-${id}`).classList.remove('active');
+        }
+
+        async function saveEdit(id) {
+            const titleEl = document.getElementById(`edit-title-${id}`);
+            const descEl = document.getElementById(`edit-desc-${id}`);
+            const newTitle = titleEl.value.trim();
+            const newDesc = descEl.value.trim();
+
+            if (!newTitle) { showToast('Title cannot be empty.'); return; }
+
+            const saveBtn = document.querySelector(`#edit-${id} .btn-save`);
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<span class="spinner"></span>';
+
+            try {
+                await db.collection('programs').doc(id).update({
+                    title: newTitle,
+                    description: newDesc,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                // Update DOM
+                const card = document.querySelector(`.program-card[data-id="${id}"]`);
+                card.querySelector('.prog-title-text').textContent = newTitle;
+                card.querySelector('.prog-desc-text').textContent = newDesc || 'No description provided.';
+
+                // Update edit inputs
+                document.getElementById(`edit-title-${id}`).value = newTitle;
+                document.getElementById(`edit-desc-${id}`).value = newDesc;
+
+                cancelEdit(id);
+                showToast('Program updated!');
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to save. Try again.');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-check"></i> Save';
+            }
+        }
+
+        // ── Delete ──
         async function deleteProgram(id, btn) {
             if (!confirm('Delete this program? This cannot be undone.')) return;
             btn.disabled = true;
@@ -1074,8 +1504,10 @@
                 await db.collection('programs').doc(id).delete();
                 const card = document.querySelector(`.program-card[data-id="${id}"]`);
                 if (card) {
-                    card.style.animation = 'fadeInUp 0.3s ease reverse';
-                    setTimeout(() => { card.remove(); updateCount(); }, 280);
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.95)';
+                    card.style.transition = 'all 0.3s ease';
+                    setTimeout(() => { card.remove(); updateCount(); }, 300);
                 }
                 showToast('Program deleted.');
             } catch (err) {
@@ -1091,23 +1523,101 @@
                 count === 0 ? 'No programs yet – add your first one!' : `${count} program${count !== 1 ? 's' : ''} published`;
         }
 
+        // ── Fullscreen Gallery ──
+        let galleryImages = [];
+        let galleryIndex = 0;
+
+        function openGallery(images, startIdx, title) {
+            if (!images.length) return;
+            galleryImages = images;
+            galleryIndex = startIdx;
+            document.getElementById('galleryTitle').textContent = title;
+            document.getElementById('galleryOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            renderGallery();
+        }
+
+        function renderGallery() {
+            const img = document.getElementById('galleryMainImg');
+            img.src = galleryImages[galleryIndex];
+            img.style.animation = 'none';
+            img.offsetHeight; // reflow
+            img.style.animation = '';
+
+            document.getElementById('galleryCounterBig').textContent = `${galleryIndex + 1} of ${galleryImages.length}`;
+            document.getElementById('galleryPrev').disabled = galleryIndex === 0;
+            document.getElementById('galleryNext').disabled = galleryIndex === galleryImages.length - 1;
+
+            const thumbsEl = document.getElementById('galleryThumbs');
+            thumbsEl.innerHTML = galleryImages.map((url, i) => `
+                <div class="gallery-thumb ${i === galleryIndex ? 'active' : ''}" onclick="galleryGoTo(${i})">
+                    <img src="${url}" alt="Thumbnail ${i + 1}" loading="lazy">
+                </div>`).join('');
+        }
+
+        function galleryGoTo(idx) {
+            galleryIndex = idx;
+            renderGallery();
+        }
+
+        document.getElementById('galleryPrev').addEventListener('click', () => {
+            if (galleryIndex > 0) { galleryIndex--; renderGallery(); }
+        });
+
+        document.getElementById('galleryNext').addEventListener('click', () => {
+            if (galleryIndex < galleryImages.length - 1) { galleryIndex++; renderGallery(); }
+        });
+
+        document.getElementById('galleryClose').addEventListener('click', closeGallery);
+
+        document.getElementById('galleryOverlay').addEventListener('click', e => {
+            if (e.target === document.getElementById('galleryOverlay')) closeGallery();
+        });
+
+        function closeGallery() {
+            document.getElementById('galleryOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Gallery keyboard nav
+        document.addEventListener('keydown', e => {
+            if (!document.getElementById('galleryOverlay').classList.contains('active')) return;
+            if (e.key === 'ArrowLeft') { if (galleryIndex > 0) { galleryIndex--; renderGallery(); } }
+            if (e.key === 'ArrowRight') { if (galleryIndex < galleryImages.length - 1) { galleryIndex++; renderGallery(); } }
+            if (e.key === 'Escape') closeGallery();
+        });
+
+        // Gallery swipe
+        let gSwipeStartX = 0;
+        document.getElementById('galleryOverlay').addEventListener('touchstart', e => {
+            gSwipeStartX = e.touches[0].clientX;
+        }, { passive: true });
+        document.getElementById('galleryOverlay').addEventListener('touchend', e => {
+            const dx = gSwipeStartX - e.changedTouches[0].clientX;
+            if (Math.abs(dx) > 50) {
+                if (dx > 0 && galleryIndex < galleryImages.length - 1) { galleryIndex++; renderGallery(); }
+                if (dx < 0 && galleryIndex > 0) { galleryIndex--; renderGallery(); }
+            }
+        }, { passive: true });
+
         // ── Modal ──
         function openModal() {
             document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
             resetModal();
         }
 
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
             resetModal();
         }
 
         function resetModal() {
-            selectedFile = null;
+            selectedFiles = [];
             document.getElementById('imageInput').value = '';
-            document.getElementById('previewImg').src = '';
-            document.getElementById('imagePreview').style.display = 'none';
-            document.getElementById('dropZone').style.display = 'block';
+            document.getElementById('previewsGrid').innerHTML = '';
+            document.getElementById('previewCount').style.display = 'none';
             document.getElementById('programTitle').value = '';
             document.getElementById('programDesc').value = '';
             document.getElementById('uploadProgress').style.display = 'none';
@@ -1124,7 +1634,7 @@
             if (e.target === document.getElementById('modalOverlay')) closeModal();
         });
 
-        // ── Drag & Drop ──
+        // ── File Selection ──
         const dropZone = document.getElementById('dropZone');
         const imageInput = document.getElementById('imageInput');
 
@@ -1133,43 +1643,65 @@
         dropZone.addEventListener('drop', e => {
             e.preventDefault();
             dropZone.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            if (file) handleFileSelect(file);
+            handleFilesSelect(Array.from(e.dataTransfer.files));
         });
 
         imageInput.addEventListener('change', e => {
-            if (e.target.files[0]) handleFileSelect(e.target.files[0]);
+            if (e.target.files.length) handleFilesSelect(Array.from(e.target.files));
         });
 
-        function handleFileSelect(file) {
-            if (!file.type.startsWith('image/')) {
-                showModalAlert('error', 'Please select a valid image file.');
-                return;
+        function handleFilesSelect(files) {
+            const validFiles = [];
+            for (const file of files) {
+                if (!file.type.startsWith('image/')) { showModalAlert('error', `"${file.name}" is not a valid image.`); continue; }
+                if (file.size > 10 * 1024 * 1024) { showModalAlert('error', `"${file.name}" exceeds 10MB.`); continue; }
+                validFiles.push(file);
             }
-            if (file.size > 10 * 1024 * 1024) {
-                showModalAlert('error', 'File size must be under 10MB.');
-                return;
-            }
-            selectedFile = file;
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('imagePreview').style.display = 'block';
-                dropZone.style.display = 'none';
-                hideAlert();
-            };
-            reader.readAsDataURL(file);
+            selectedFiles = [...selectedFiles, ...validFiles];
+            renderPreviews();
+            hideAlert();
         }
 
-        document.getElementById('removeImg').addEventListener('click', () => {
-            selectedFile = null;
-            document.getElementById('imageInput').value = '';
-            document.getElementById('imagePreview').style.display = 'none';
-            dropZone.style.display = 'block';
-        });
+        function renderPreviews() {
+            const grid = document.getElementById('previewsGrid');
+            const countEl = document.getElementById('previewCount');
+            grid.innerHTML = '';
 
-        // ── Upload to Cloudinary ──
-        function uploadToCloudinary(file) {
+            selectedFiles.forEach((file, idx) => {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+                const url = URL.createObjectURL(file);
+                item.innerHTML = `
+                    <img src="${url}" alt="Preview">
+                    <button class="preview-remove" onclick="removeFile(${idx})" title="Remove"><i class="fas fa-times"></i></button>`;
+                grid.appendChild(item);
+            });
+
+            if (selectedFiles.length) {
+                countEl.style.display = 'block';
+                countEl.innerHTML = `<strong>${selectedFiles.length}</strong> image${selectedFiles.length !== 1 ? 's' : ''} selected`;
+            } else {
+                countEl.style.display = 'none';
+            }
+        }
+
+        function removeFile(idx) {
+            selectedFiles.splice(idx, 1);
+            renderPreviews();
+        }
+
+        // ── Upload all to Cloudinary ──
+        async function uploadAllImages(files) {
+            const urls = [];
+            for (let i = 0; i < files.length; i++) {
+                document.getElementById('progressLabel').textContent = `Uploading image ${i + 1} of ${files.length}...`;
+                const url = await uploadToCloudinary(files[i], i, files.length);
+                urls.push(url);
+            }
+            return urls;
+        }
+
+        function uploadToCloudinary(file, fileIdx, total) {
             return new Promise((resolve, reject) => {
                 const formData = new FormData();
                 formData.append('file', file);
@@ -1180,22 +1712,19 @@
 
                 xhr.upload.addEventListener('progress', e => {
                     if (e.lengthComputable) {
-                        const pct = Math.round((e.loaded / e.total) * 100);
-                        document.getElementById('progressBar').style.width = pct + '%';
-                        document.getElementById('progressPercent').textContent = pct + '%';
+                        const filePct = e.loaded / e.total;
+                        const totalPct = Math.round(((fileIdx + filePct) / total) * 100);
+                        document.getElementById('progressBar').style.width = totalPct + '%';
+                        document.getElementById('progressPercent').textContent = totalPct + '%';
                     }
                 });
 
                 xhr.onload = () => {
-                    if (xhr.status === 200) {
-                        const res = JSON.parse(xhr.responseText);
-                        resolve(res.secure_url);
-                    } else {
-                        reject(new Error('Cloudinary upload failed: ' + xhr.statusText));
-                    }
+                    if (xhr.status === 200) resolve(JSON.parse(xhr.responseText).secure_url);
+                    else reject(new Error('Upload failed: ' + xhr.statusText));
                 };
 
-                xhr.onerror = () => reject(new Error('Network error during upload'));
+                xhr.onerror = () => reject(new Error('Network error'));
                 xhr.send(formData);
             });
         }
@@ -1205,51 +1734,42 @@
             const title = document.getElementById('programTitle').value.trim();
             const desc = document.getElementById('programDesc').value.trim();
 
-            if (!selectedFile) { showModalAlert('error', 'Please select an image.'); return; }
+            if (!selectedFiles.length) { showModalAlert('error', 'Please select at least one image.'); return; }
             if (!title) { showModalAlert('error', 'Please enter a program title.'); return; }
             if (!desc) { showModalAlert('error', 'Please add a description.'); return; }
 
             const btn = document.getElementById('submitBtn');
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner"></span><span>Uploading...</span>';
-
             document.getElementById('uploadProgress').style.display = 'block';
             hideAlert();
 
             try {
-                // 1. Upload image to Cloudinary
-                const imageUrl = await uploadToCloudinary(selectedFile);
+                const imageUrls = await uploadAllImages(selectedFiles);
 
-                // 2. Save to Firestore
                 btn.innerHTML = '<span class="spinner"></span><span>Saving...</span>';
 
                 const docRef = await db.collection('programs').add({
                     title,
                     description: desc,
-                    imageUrl,
+                    images: imageUrls,
+                    imageUrl: imageUrls[0], // backward compat
                     createdBy: currentUser.uid,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
-                showToast('Program published successfully!');
+                showToast(`Program published with ${imageUrls.length} image${imageUrls.length !== 1 ? 's' : ''}!`);
                 closeModal();
 
-                // 3. Prepend new card to grid
                 const grid = document.getElementById('programsGrid');
-                const newCard = buildProgramCard(docRef.id, {
-                    title,
-                    description: desc,
-                    imageUrl,
-                    createdAt: null
-                });
-                // Insert after add card
+                const newCard = buildProgramCard(docRef.id, { title, description: desc, images: imageUrls, imageUrl: imageUrls[0], createdAt: null });
                 const addCard = document.getElementById('addProgramCard');
                 grid.insertBefore(newCard, addCard.nextSibling);
                 updateCount();
 
             } catch (err) {
-                console.error('Upload error:', err);
+                console.error(err);
                 document.getElementById('uploadProgress').style.display = 'none';
                 showModalAlert('error', 'Upload failed: ' + err.message);
                 btn.disabled = false;
@@ -1265,30 +1785,26 @@
             el.style.display = 'flex';
         }
 
-        function hideAlert() {
-            const el = document.getElementById('modalAlert');
-            el.style.display = 'none';
-        }
+        function hideAlert() { document.getElementById('modalAlert').style.display = 'none'; }
 
         function showToast(msg) {
             const existing = document.querySelector('.toast');
             if (existing) existing.remove();
-
             const toast = document.createElement('div');
             toast.className = 'toast';
             toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${msg}</span>`;
             document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.classList.add('out');
-                setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            setTimeout(() => { toast.classList.add('out'); setTimeout(() => toast.remove(), 300); }, 3500);
         }
 
         function escapeHtml(str) {
-            const div = document.createElement('div');
-            div.appendChild(document.createTextNode(str));
-            return div.innerHTML;
+            const d = document.createElement('div');
+            d.appendChild(document.createTextNode(str));
+            return d.innerHTML;
+        }
+
+        function escapeAttr(str) {
+            return str.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
     </script>
 </body>
