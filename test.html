@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design Brief — The Faypat Effect Foundation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --g-accent:  #00D9A3;
+      --g-deep:    #0A4D3C;
+      --g-mid:     #0d5c48;
+      --g-soft:    #B8F5E5;
+      --g-pale:    #e6f9f3;
+      --gold:      #C9A84C;
+      --white:     #FFFFFF;
+      --cream:     #F8FAF9;
+      --gray-50:   #F2F6F4;
+      --gray-100:  #E5EDE9;
+      --gray-300:  #A8BDB5;
+      --gray-500:  #6B8078;
+      --gray-700:  #3A4F48;
+      --gray-900:  #18271F;
+      --dark:      #061e15;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    /* ─── COVER ───────────────────────────────────────────────────── */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,217,163,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 90% 80%, rgba(201,168,76,.12) 0%, transparent 60%),
+        var(--dark);
+      overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 59px, rgba(0,217,163,.04) 60px
+      ), repeating-linear-gradient(
+        90deg, transparent, transparent 59px, rgba(0,217,163,.04) 60px
+      );
+    }
+    .cover-badge {
+      display: inline-block;
+      border: 1px solid var(--g-accent);
+      color: var(--g-accent);
+      font-size: .7rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      padding: 6px 20px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+    .cover h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 9vw, 7.5rem);
+      font-weight: 300;
+      line-height: 1;
+      letter-spacing: -.02em;
+    }
+    .cover h1 em {
+      font-style: italic;
+      color: var(--g-accent);
+    }
+    .cover-sub {
+      margin-top: 20px;
+      font-size: clamp(.85rem, 2vw, 1rem);
+      color: var(--gray-300);
+      max-width: 540px;
+      line-height: 1.7;
+    }
+    .cover-meta {
+      margin-top: 48px;
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .cover-meta span {
+      font-size: .75rem;
+      color: var(--gray-500);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .cover-meta strong {
+      display: block;
+      font-size: .9rem;
+      color: var(--white);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .scroll-hint {
+      margin-top: 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--gray-500);
+      font-size: .7rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      animation: bob 2s ease-in-out infinite;
+    }
+    .scroll-hint svg { opacity: .5; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
+
+    /* ─── LAYOUT WRAPPER ──────────────────────────────────────────── */
+    .brief {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px 120px;
+    }
+
+    /* ─── CHAPTER HEADING ─────────────────────────────────────────── */
+    .chapter {
+      margin-top: 100px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(0,217,163,.15);
+    }
+    .chapter-label {
+      font-size: .65rem;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--g-accent);
+      margin-bottom: 12px;
+    }
+    .chapter h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--white);
+    }
+    .chapter h2 em { font-style: italic; color: var(--gold); }
+    .chapter-intro {
+      margin-top: 16px;
+      font-size: .95rem;
+      color: var(--gray-300);
+      max-width: 640px;
+      line-height: 1.75;
+    }
+
+    /* ─── SECTION CARDS ───────────────────────────────────────────── */
+    .section-grid {
+      margin-top: 48px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .sec-card {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 16px;
+      padding: 32px 36px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .sec-card:hover {
+      border-color: rgba(0,217,163,.25);
+      transform: translateY(-2px);
+    }
+    .sec-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: linear-gradient(180deg, var(--g-accent), var(--gold));
+      border-radius: 4px 0 0 4px;
+    }
+    .sec-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: rgba(0,217,163,.12);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .sec-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .sec-card p {
+      font-size: .88rem;
+      color: var(--gray-300);
+      line-height: 1.75;
+    }
+
+    /* image pill tags */
+    .img-tags {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      font-size: .7rem;
+      letter-spacing: .08em;
+      padding: 4px 12px;
+      border-radius: 100px;
+      font-weight: 500;
+    }
+    .tag-img   { background: rgba(0,217,163,.12); color: var(--g-accent); border: 1px solid rgba(0,217,163,.2); }
+    .tag-gold  { background: rgba(201,168,76,.12); color: var(--gold);    border: 1px solid rgba(201,168,76,.2); }
+    .tag-info  { background: rgba(255,255,255,.06); color: var(--gray-300); border: 1px solid rgba(255,255,255,.1); }
+
+    /* ─── TWO-COL CARDS ───────────────────────────────────────────── */
+    .two-col { grid-template-columns: 1fr 1fr; }
+    @media(max-width:640px){ .two-col { grid-template-columns: 1fr; } }
+
+    /* ─── HERO DETAIL BLOCK ───────────────────────────────────────── */
+    .hero-detail {
+      margin-top: 28px;
+      background: linear-gradient(135deg, rgba(10,77,60,.4) 0%, rgba(6,30,21,.8) 100%);
+      border: 1px solid rgba(0,217,163,.18);
+      border-radius: 16px;
+      padding: 36px;
+    }
+    .hero-detail h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--g-accent);
+      margin-bottom: 16px;
+    }
+    .hero-layers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .layer-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .layer-num {
+      min-width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(0,217,163,.15);
+      color: var(--g-accent);
+      font-size: .72rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .layer-text { font-size: .87rem; color: var(--gray-300); line-height: 1.65; }
+    .layer-text strong { color: var(--white); }
+
+    /* ─── GALLERY SPEC ────────────────────────────────────────────── */
+    .gallery-grid {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .g-item {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px;
+      padding: 20px 22px;
+      transition: border-color .3s;
+    }
+    .g-item:hover { border-color: rgba(0,217,163,.3); }
+    .g-item-title {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 6px;
+    }
+    .g-item-desc {
+      font-size: .78rem;
+      color: var(--gray-500);
+      line-height: 1.6;
+    }
+    .g-ratio {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: .65rem;
+      color: var(--g-accent);
+      background: rgba(0,217,163,.08);
+      border: 1px solid rgba(0,217,163,.18);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    /* ─── FORM SPEC ───────────────────────────────────────────────── */
+    .form-fields {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media(max-width:560px){ .form-fields { grid-template-columns: 1fr; } }
+    .field-box {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 10px;
+      padding: 16px 18px;
+    }
+    .field-box.full { grid-column: 1/-1; }
+    .field-label {
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--g-accent);
+      margin-bottom: 4px;
+    }
+    .field-note {
+      font-size: .82rem;
+      color: var(--gray-300);
+    }
+    .required-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    /* ─── FOOTER SPEC ─────────────────────────────────────────────── */
+    .footer-spec {
+      margin-top: 32px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 20px;
+    }
+    @media(max-width:720px){ .footer-spec { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:440px){ .footer-spec { grid-template-columns: 1fr; } }
+    .footer-col {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .footer-col h5 {
+      font-size: .72rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--g-accent);
+      margin-bottom: 12px;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer-col li { font-size: .82rem; color: var(--gray-300); }
+
+    .social-row {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .social-chip {
+      padding: 6px 14px;
+      border-radius: 100px;
+      font-size: .75rem;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--gray-300);
+      background: rgba(255,255,255,.04);
+    }
+
+    /* ─── COLOUR PALETTE ──────────────────────────────────────────── */
+    .palette-row {
+      margin-top: 28px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 10px;
+      padding: 10px 14px;
+      min-width: 160px;
+    }
+    .swatch-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.08);
+    }
+    .swatch-info .swatch-name {
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .swatch-info .swatch-hex {
+      font-size: .68rem;
+      color: var(--gray-500);
+      font-family: monospace;
+    }
+
+    /* ─── TYPOGRAPHY SPEC ─────────────────────────────────────────── */
+    .type-pair {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media(max-width:560px){ .type-pair { grid-template-columns: 1fr; } }
+    .type-box {
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .type-sample-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .type-sample-body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--gray-300);
+      line-height: 1.7;
+      margin-bottom: 10px;
+    }
+    .type-meta { font-size: .72rem; color: var(--gray-500); letter-spacing: .1em; }
+
+    /* ─── RESPONSIVE NOTES ────────────────────────────────────────── */
+    .resp-table {
+      margin-top: 24px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .resp-table th, .resp-table td {
+      padding: 12px 16px;
+      font-size: .82rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .resp-table th {
+      font-size: .68rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--g-accent);
+      font-weight: 600;
+    }
+    .resp-table td { color: var(--gray-300); }
+    .resp-table tr:last-child td { border-bottom: none; }
+
+    /* ─── ANIMATIONS ──────────────────────────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: none; }
+
+    /* ─── DIVIDER ─────────────────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0,217,163,.2), transparent);
+      margin: 60px 0;
+    }
+
+    /* ─── TOC ─────────────────────────────────────────────────────── */
+    .toc {
+      position: sticky;
+      /* non-sticky on small screens */
+    }
+    .toc-inner {
+      background: rgba(0,217,163,.05);
+      border: 1px solid rgba(0,217,163,.12);
+      border-radius: 14px;
+      padding: 28px;
+      margin: 60px 0;
+    }
+    .toc-inner h4 {
+      font-size: .65rem;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      color: var(--g-accent);
+      margin-bottom: 16px;
+    }
+    .toc-inner ol {
+      counter-reset: toc;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .toc-inner li {
+      counter-increment: toc;
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+    .toc-inner li::before {
+      content: counter(toc, decimal-leading-zero);
+      font-size: .65rem;
+      color: var(--g-accent);
+      font-family: monospace;
+      min-width: 24px;
+    }
+    .toc-inner a {
+      font-size: .85rem;
+      color: var(--gray-300);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .toc-inner a:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════ COVER ════════════════════════════ -->
+  <section class="cover">
+    <div class="cover-badge">Website Design Brief · 2026</div>
+    <h1>The Faypat<br><em>Effect</em> Foundation</h1>
+    <p class="cover-sub">A complete, section-by-section design specification for a premium, image-rich, fully responsive website that communicates faith, compassion & empowerment.</p>
+    <div class="cover-meta">
+      <div><span>Client</span><strong>The Faypat Effect Foundation</strong></div>
+      <div><span>Founded by</span><strong>Favour Patrick</strong></div>
+      <div><span>Document type</span><strong>Design Brief</strong></div>
+      <div><span>Year</span><strong>2026</strong></div>
+    </div>
+    <div class="scroll-hint">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Scroll to explore
+    </div>
+  </section>
+
+  <div class="brief">
+
+    <!-- ─── TABLE OF CONTENTS ─────────────────────────────────────── -->
+    <div class="toc-inner fade-up">
+      <h4>Contents</h4>
+      <ol>
+        <li><a href="#s1">Visual Identity & Brand Palette</a></li>
+        <li><a href="#s2">Typography System</a></li>
+        <li><a href="#s3">Section 1 — Navigation Bar</a></li>
+        <li><a href="#s4">Section 2 — Hero (Dynamic Full-Screen)</a></li>
+        <li><a href="#s5">Section 3 — Impact Statistics Strip</a></li>
+        <li><a href="#s6">Section 4 — Who We Are</a></li>
+        <li><a href="#s7">Section 5 — Four Pillars / Core Focus</a></li>
+        <li><a href="#s8">Section 6 — Programs Showcase</a></li>
+        <li><a href="#s9">Section 7 — Founder's Message</a></li>
+        <li><a href="#s10">Section 8 — Full Gallery</a></li>
+        <li><a href="#s11">Section 9 — Volunteer Form</a></li>
+        <li><a href="#s12">Section 10 — Donation CTA</a></li>
+        <li><a href="#s13">Section 11 — Partners & Trust Bar</a></li>
+        <li><a href="#s14">Section 12 — Footer</a></li>
+        <li><a href="#s15">Responsive Breakpoints</a></li>
+        <li><a href="#s16">Animations & Interactions</a></li>
+      </ol>
+    </div>
+
+    <!-- ═══ 1. VISUAL IDENTITY ════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s1">
+      <div class="chapter-label">01 — Brand Foundation</div>
+      <h2>Visual Identity &<br><em>Colour Palette</em></h2>
+      <p class="chapter-intro">All colours are extracted from the supplied brand tokens. The palette combines deep forest greens — evoking growth, nature and faith — with a luminous teal accent and warm gold that speaks to hope and divine light.</p>
+      <div class="palette-row">
+        <div class="swatch"><div class="swatch-dot" style="background:#00D9A3"></div><div class="swatch-info"><div class="swatch-name">Accent Teal</div><div class="swatch-hex">#00D9A3</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#0A4D3C"></div><div class="swatch-info"><div class="swatch-name">Deep Forest</div><div class="swatch-hex">#0A4D3C</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#0d5c48"></div><div class="swatch-info"><div class="swatch-name">Mid Forest</div><div class="swatch-hex">#0d5c48</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#B8F5E5"></div><div class="swatch-info"><div class="swatch-name">Soft Teal</div><div class="swatch-hex">#B8F5E5</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#C9A84C"></div><div class="swatch-info"><div class="swatch-name">Gold</div><div class="swatch-hex">#C9A84C</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#e6f9f3"></div><div class="swatch-info"><div class="swatch-name">Pale Teal</div><div class="swatch-hex">#e6f9f3</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#061e15"></div><div class="swatch-info"><div class="swatch-name">Dark Base</div><div class="swatch-hex">#061e15</div></div></div>
+        <div class="swatch"><div class="swatch-dot" style="background:#F8FAF9"></div><div class="swatch-info"><div class="swatch-name">Cream</div><div class="swatch-hex">#F8FAF9</div></div></div>
+      </div>
+    </div>
+
+    <!-- ═══ 2. TYPOGRAPHY ═════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s2">
+      <div class="chapter-label">02 — Typography</div>
+      <h2>The Typography<br><em>System</em></h2>
+      <p class="chapter-intro">A classical serif-based display font is paired with a clean, modern body font — communicating both spiritual depth and accessible warmth.</p>
+      <div class="type-pair">
+        <div class="type-box">
+          <div class="type-sample-display">Cormorant Garamond</div>
+          <div class="type-meta">DISPLAY / HEADINGS — Weight 300–700 · Use for all H1, H2, H3 and pull quotes. Italics for emphasis and key phrases.</div>
+        </div>
+        <div class="type-box">
+          <div class="type-sample-body">DM Sans — clean, warm, humanist sans-serif for all body text, labels, buttons, form fields, and navigation. Weights 300, 400, 500, 600.</div>
+          <div class="type-meta">BODY / UI — Weight 300–600 · High readability at small sizes. Never use below 12px.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ═══ 3. NAVBAR ═════════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s3">
+      <div class="chapter-label">Section 01</div>
+      <h2>Navigation <em>Bar</em></h2>
+      <p class="chapter-intro">Fixed/sticky navigation that transitions from transparent-over-hero to a solid dark-green background on scroll. Contains logo left, links centre, CTA button right.</p>
+      <div class="section-grid">
+        <div class="sec-card">
+          <div class="sec-num">01</div>
+          <h3>Nav Design Spec</h3>
+          <p>Full-width sticky header. On page load: fully transparent with white text over the hero image. On scroll past 80px: background becomes <code style="color:var(--g-accent)">#061e15</code> with a subtle backdrop-blur. Logo on the left: Foundation name in Cormorant Garamond + a small leaf/cross icon in teal. Centre links: Home, About, Programs, Gallery, Volunteer, Donate. Right side: a teal "Donate Now" pill button.</p>
+          <div class="img-tags">
+            <span class="tag tag-img">🏷 Logo PNG/SVG — transparent bg</span>
+            <span class="tag tag-info">Hamburger menu on mobile</span>
+            <span class="tag tag-info">Slide-down drawer on mobile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 4. HERO ═══════════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s4">
+      <div class="chapter-label">Section 02</div>
+      <h2>Hero Section —<br><em>Dynamic Fullscreen</em></h2>
+      <p class="chapter-intro">The hero must be a visually commanding full-viewport experience. Dynamic background images transition automatically with a crossfade or Ken Burns effect. A darkened overlay preserves text legibility.</p>
+
+      <div class="hero-detail">
+        <h4>🖼 Hero Image Slideshow — 5 Slides Required</h4>
+        <div class="hero-layers">
+          <div class="layer-row"><div class="layer-num">1</div><div class="layer-text"><strong>Slide 1 — Community Joy:</strong> A wide group shot of smiling youth/children at a community outreach event. Bright, warm lighting. Ratio: 16:9 landscape, minimum 1920×1080px.</div></div>
+          <div class="layer-row"><div class="layer-num">2</div><div class="layer-num">2</div><div class="layer-text"><strong>Slide 2 — Orphanage Visit:</strong> Volunteers with children at an orphanage — warm, intimate moment. Candid-style documentary photography.</div></div>
+          <div class="layer-row"><div class="layer-num">3</div><div class="layer-text"><strong>Slide 3 — Girl Child / Women Empowerment:</strong> Young girls or women in a workshop or educational setting, engaged and empowered.</div></div>
+          <div class="layer-row"><div class="layer-num">4</div><div class="layer-text"><strong>Slide 4 — Bible Distribution:</strong> The 1000 Bible Project in action — hands receiving Bibles, community gatherings, faith imagery.</div></div>
+          <div class="layer-row"><div class="layer-num">5</div><div class="layer-text"><strong>Slide 5 — Widows Support:</strong> Dignified portrait-style or candid image of older women receiving support. Conveys grace and compassion.</div></div>
+        </div>
+      </div>
+
+      <div class="section-grid" style="margin-top:20px">
+        <div class="sec-card">
+          <h3>Hero Overlay Content</h3>
+          <p>Dark gradient overlay (bottom 60% of image fades to #061e15 at 75% opacity). Centred text layout: small ALL-CAPS label → Large display headline in Cormorant Garamond → One-line subheading → Two CTA buttons: "Discover Our Work" (outlined teal) and "Donate Now" (solid teal/gold).</p>
+          <div class="img-tags">
+            <span class="tag tag-img">🎬 Autoplay — 5s per slide</span>
+            <span class="tag tag-img">✨ Ken Burns zoom effect per slide</span>
+            <span class="tag tag-gold">Dot/dash navigation indicators</span>
+            <span class="tag tag-info">Prev / Next arrow controls</span>
+          </div>
+        </div>
+        <div class="sec-card">
+          <h3>Scroll Indicator</h3>
+          <p>At the base of the hero, an animated downward chevron or mouse-scroll icon in teal with a gentle bobbing animation encourages the user to scroll. Below this a transparent stat strip previews the impact numbers (see Section 3).</p>
+          <div class="img-tags">
+            <span class="tag tag-info">Parallax scroll on hero image optional</span>
+            <span class="tag tag-gold">Stat strip overlapping hero bottom</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 5. STATS ══════════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s5">
+      <div class="chapter-label">Section 03</div>
+      <h2>Impact <em>Statistics</em> Strip</h2>
+      <p class="chapter-intro">A full-width horizontal band that overlaps the bottom of the hero section. Dark green glass-morphism background. Numbers animate (count-up) when the section enters the viewport.</p>
+      <div class="section-grid two-col">
+        <div class="sec-card">
+          <h3>Four Stat Columns</h3>
+          <p><strong>5,000+</strong> Lives Impacted · <strong>50+</strong> Communities Reached · <strong>200+</strong> Volunteers · <strong>11</strong> Active Programs. Each stat has: Large number in Cormorant Garamond gold, small label in DM Sans teal, thin divider lines between columns.</p>
+          <div class="img-tags"><span class="tag tag-gold">Count-up animation on scroll</span></div>
+        </div>
+        <div class="sec-card">
+          <h3>Background & Style</h3>
+          <p>Background: rgba of #0A4D3C at 90% opacity with backdrop-blur. A subtle teal gradient border on top edge. The strip sits at z-index above the hero image, slightly overlapping to create depth.</p>
+          <div class="img-tags"><span class="tag tag-img">Glass morphism card style</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 6. WHO WE ARE ═════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s6">
+      <div class="chapter-label">Section 04</div>
+      <h2>Who We <em>Are</em></h2>
+      <p class="chapter-intro">A split-screen section: left side text/mission; right side a rich collage of real program photos. Background is cream (#F8FAF9) with dark text — the only light-background section on the page, creating a breathing rhythm.</p>
+      <div class="section-grid two-col">
+        <div class="sec-card">
+          <h3>Left — Text Content</h3>
+          <p>Section label "Who We Are" in teal. Large Cormorant Garamond heading: "A Faith-Driven Force for Human Dignity." Two paragraphs: Vision + Mission. Two accent icons (leaf, cross). A "Learn More About Us" text-link with arrow.</p>
+          <div class="img-tags"><span class="tag tag-info">Background: var(--cream)</span></div>
+        </div>
+        <div class="sec-card">
+          <h3>Right — Photo Collage</h3>
+          <p>A 2×2 asymmetric grid of authentic images. Top-left: tall portrait of Favour Patrick (Founder). Top-right: children smiling in an outreach. Bottom-left: Bible distribution wide shot. Bottom-right: skill acquisition workshop. The collage has rounded corners (16px) and a soft teal box-shadow.</p>
+          <div class="img-tags">
+            <span class="tag tag-img">📸 4 images — collage grid</span>
+            <span class="tag tag-img">Founder portrait (official/candid)</span>
+            <span class="tag tag-img">Children at outreach</span>
+            <span class="tag tag-img">Bible distribution</span>
+            <span class="tag tag-img">Skill acquisition workshop</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 7. PILLARS ════════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s7">
+      <div class="chapter-label">Section 05</div>
+      <h2>Four Pillars of<br><em>Impact</em></h2>
+      <p class="chapter-intro">A dark section (#061e15) with four large cards in a 2×2 grid (desktop) or single-column (mobile). Each card has a full background image, gradient overlay, icon, number and description.</p>
+      <div class="section-grid two-col">
+        <div class="sec-card">
+          <div class="sec-num">01</div>
+          <h3>Faith Empowerment Card</h3>
+          <p>Background image: Young people in a prayer/worship gathering or Bible study circle. Gold number "01". Icon: cross or open Bible. Title + 2-line description. Hover effect: image zooms slightly, card border glows teal.</p>
+          <div class="img-tags"><span class="tag tag-img">📸 Prayer/worship group image</span></div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-num">02</div>
+          <h3>Creative Empowerment Card</h3>
+          <p>Background image: Hands doing craft work, painting, or a skills workshop. Teal number "02". Icon: paintbrush or lightbulb. Shows creativity and youth potential.</p>
+          <div class="img-tags"><span class="tag tag-img">📸 Creative workshop / art skills image</span></div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-num">03</div>
+          <h3>Support for Vulnerable Card</h3>
+          <p>Background image: Volunteers giving food/items to widows or children at an orphanage. Warm, dignified scene. Icon: hands/heart.</p>
+          <div class="img-tags"><span class="tag tag-img">📸 Orphanage or widow support scene</span></div>
+        </div>
+        <div class="sec-card">
+          <div class="sec-num">04</div>
+          <h3>Community Impact Card</h3>
+          <p>Background image: Large outdoor community outreach event — people gathered in a field or hall. Wide-angle shot conveying scale. Icon: globe or people cluster.</p>
+          <div class="img-tags"><span class="tag tag-img">📸 Large community outreach wide shot</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 8. PROGRAMS ═══════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s8">
+      <div class="chapter-label">Section 06</div>
+      <h2>Our Programs <em>Showcase</em></h2>
+      <p class="chapter-intro">A horizontally scrollable card strip on mobile; a 3-column + featured card layout on desktop. Each program card is image-led with a teal accent tag and short description.</p>
+      <div class="gallery-grid">
+        <div class="g-item"><div class="g-item-title">🏠 Orphanage Visitation</div><div class="g-item-desc">Children + volunteers, warm smiles, toys/gifts being given. Interior or outdoor yard of orphanage.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">📖 1000 Bible Project</div><div class="g-item-desc">Hands holding Bibles, community gathering for distribution, joyful recipients.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">🛠 Skill Acquisition</div><div class="g-item-desc">Young people learning tailoring, baking, craft or tech skills in a workshop setting.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">💡 Made4More</div><div class="g-item-desc">Youth empowerment/mentorship session — young people engaged, motivated, speaking or listening.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">🌸 Menstrual Hygiene Day</div><div class="g-item-desc">Girls receiving hygiene kits, health education session in school or community hall.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">✝️ Sexual Purity Outreach</div><div class="g-item-desc">Youth gathered for talks, testimonies, prayer — expressive and engaging environment.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">👦 Day of the Boy Child</div><div class="g-item-desc">Boys in celebration or empowerment event — vibrant, colourful, energetic setting.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">👧 Day of the Girl Child</div><div class="g-item-desc">Girls in focus — confident, celebrated, engaged in activities or posed proudly.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">🤲 Widows Support</div><div class="g-item-desc">Dignified images of older women receiving support, food items, or simply being cared for.</div><span class="g-ratio">3:2 landscape</span></div>
+        <div class="g-item"><div class="g-item-title">🌍 Community Outreaches</div><div class="g-item-desc">Wide-angle crowd shot of outdoor community event, team with banners, food distribution.</div><span class="g-ratio">16:9 wide</span></div>
+        <div class="g-item"><div class="g-item-title">🎓 Educational Scholarships</div><div class="g-item-desc">Student receiving scholarship letter or award, smiling, school uniform or graduation attire.</div><span class="g-ratio">3:2 landscape</span></div>
+      </div>
+    </div>
+
+    <!-- ═══ 9. FOUNDER ════════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s9">
+      <div class="chapter-label">Section 07</div>
+      <h2>Founder's <em>Message</em></h2>
+      <p class="chapter-intro">A full-width cinematic section with a large background image of the founder or a meaningful landscape. Left-side dark panel with text; right side is the image bleeding to the edge. Creates a magazine editorial feel.</p>
+      <div class="section-grid">
+        <div class="sec-card">
+          <h3>Image Specification</h3>
+          <p>Right half of the section (or full-bleed background on mobile): A high-quality portrait of Favour Patrick — professional headshot or candid at a program event. Expression: warm, confident, purposeful. Lighting: natural or soft studio. The image has a dark gradient overlay on the left side merging into the text panel.</p>
+          <div class="img-tags">
+            <span class="tag tag-img">📸 Founder portrait — high resolution</span>
+            <span class="tag tag-img">Min: 800×1000px portrait crop</span>
+            <span class="tag tag-gold">Gold quote marks decorative element</span>
+            <span class="tag tag-info">Signature / handwritten font for name</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 10. GALLERY ═══════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s10">
+      <div class="chapter-label">Section 08</div>
+      <h2>Full Photo <em>Gallery</em></h2>
+      <p class="chapter-intro">A masonry or Pinterest-style image grid that shows the full breadth of the Foundation's work. Includes category filter tabs, lightbox on click, lazy loading, and descriptive captions.</p>
+      <div class="section-grid">
+        <div class="sec-card">
+          <h3>Filter Tabs</h3>
+          <p>Pill-style filter buttons above the grid: All · Faith · Community · Women · Children · Orphanage · Skills · Outreach. Active state: solid teal. Inactive: outlined. Smooth JS filter animation (fade/scale transition).</p>
+          <div class="img-tags"><span class="tag tag-img">8 category filters</span><span class="tag tag-info">Isotope.js or CSS grid filter</span></div>
+        </div>
+        <div class="sec-card">
+          <h3>Grid Layout</h3>
+          <p>Desktop: 4-column masonry grid. Tablet: 3-column. Mobile: 2-column. Images have a hover overlay showing a teal-tinted scrim + white expand icon + photo title in DM Sans. Corner badge shows the program category.</p>
+          <div class="img-tags">
+            <span class="tag tag-img">Minimum 24 gallery images</span>
+            <span class="tag tag-img">Masonry / staggered heights</span>
+            <span class="tag tag-gold">Hover overlay with title</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-detail" style="margin-top:24px">
+        <h4>📸 Gallery Image Catalogue — Required Photos</h4>
+        <div class="hero-layers">
+          <div class="layer-row"><div class="layer-num">G1</div><div class="layer-text"><strong>Orphanage Visit Series (4 photos):</strong> Exterior of orphanage with team · Children playing with volunteers · Gift/food distribution inside · Group prayer or storytime moment.</div></div>
+          <div class="layer-row"><div class="layer-num">G2</div><div class="layer-text"><strong>Bible Project Series (3 photos):</strong> Boxes of Bibles being packed · Community receiving Bibles · Individual holding their Bible joyfully.</div></div>
+          <div class="layer-row"><div class="layer-num">G3</div><div class="layer-text"><strong>Skills Workshop Series (3 photos):</strong> Hands-on workshop in progress · Finished products/creations · Certificate or celebration moment.</div></div>
+          <div class="layer-row"><div class="layer-num">G4</div><div class="layer-text"><strong>Girl Child / Boy Child Events (4 photos):</strong> Event stage or banner · Activities in progress · Group celebration · Award or prize giving.</div></div>
+          <div class="layer-row"><div class="layer-num">G5</div><div class="layer-text"><strong>Widows & Community Support (4 photos):</strong> Food/supply packs being distributed · Women praying together · Community meeting · Team photo at outreach.</div></div>
+          <div class="layer-row"><div class="layer-num">G6</div><div class="layer-text"><strong>Made4More / Mentorship (3 photos):</strong> Speaker at front · Youth actively engaged · One powerful close-up portrait of a participant.</div></div>
+          <div class="layer-row"><div class="layer-num">G7</div><div class="layer-text"><strong>Scholarship (2 photos):</strong> Scholarship presentation · Student's proud moment/portrait.</div></div>
+          <div class="layer-row"><div class="layer-num">G8</div><div class="layer-text"><strong>"Load More" Button:</strong> Below the initial 12 visible images. Teal outlined button. Loads remaining images dynamically.</div></div>
+        </div>
+      </div>
+
+      <div class="section-grid" style="margin-top:20px">
+        <div class="sec-card">
+          <h3>Lightbox Behaviour</h3>
+          <p>Clicking any image opens a full-screen lightbox modal with: dark overlay backdrop, large image centred, left/right navigation arrows, close button (X top-right), image title + program tag + short caption below the image. ESC key closes. Swipe left/right on mobile.</p>
+          <div class="img-tags">
+            <span class="tag tag-img">Full-screen lightbox</span>
+            <span class="tag tag-info">Caption + category tag in lightbox</span>
+            <span class="tag tag-gold">Keyboard accessible (ESC, arrows)</span>
+            <span class="tag tag-info">Touch swipe on mobile</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 11. FORM ══════════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s11">
+      <div class="chapter-label">Section 09</div>
+      <h2>Volunteer <em>Application Form</em></h2>
+      <p class="chapter-intro">A split layout: left side has a compelling image and a short "Why Volunteer" pitch; right side has the styled form. Dark forest green background. All fields have custom-styled focus states in teal.</p>
+
+      <div class="section-grid two-col" style="margin-top:20px">
+        <div class="sec-card">
+          <h3>Left — Image + Pitch</h3>
+          <p>A full-height image of enthusiastic volunteers at an outreach event — candid, joyful, team-spirited. Overlaid with a dark teal gradient. Text overlay: "Be Part of Something Eternal" headline + 2 lines of encouragement + 3 bullet-point benefits (Grow in Faith · Build Community · Change Lives).</p>
+          <div class="img-tags">
+            <span class="tag tag-img">📸 Volunteers group photo — candid</span>
+            <span class="tag tag-img">Full height image left panel</span>
+          </div>
+        </div>
+        <div class="sec-card">
+          <h3>Right — Form Panel</h3>
+          <p>White/cream background or dark card on dark bg. Heading: "Join Our Volunteer Team." Form fields below.</p>
+        </div>
+      </div>
+
+      <div class="form-fields" style="margin-top:4px">
+        <div class="field-box"><div class="field-label">First Name <span class="required-dot"></span></div><div class="field-note">Text input, required</div></div>
+        <div class="field-box"><div class="field-label">Last Name <span class="required-dot"></span></div><div class="field-note">Text input, required</div></div>
+        <div class="field-box"><div class="field-label">Email Address <span class="required-dot"></span></div><div class="field-note">Email input with format validation</div></div>
+        <div class="field-box"><div class="field-label">Phone Number <span class="required-dot"></span></div><div class="field-note">Tel input, Nigerian +234 format hint</div></div>
+        <div class="field-box full"><div class="field-label">Home Address</div><div class="field-note">Text input, optional</div></div>
+        <div class="field-box"><div class="field-label">City</div><div class="field-note">Text input</div></div>
+        <div class="field-box"><div class="field-label">State</div><div class="field-note">Dropdown — all 36 Nigerian states</div></div>
+        <div class="field-box"><div class="field-label">Occupation</div><div class="field-note">Text input</div></div>
+        <div class="field-box full"><div class="field-label">Programs of Interest <span class="required-dot"></span></div><div class="field-note">Multi-select checkbox group or styled dropdown with all 11 programs listed</div></div>
+        <div class="field-box full"><div class="field-label">Skills & Experience <span class="required-dot"></span></div><div class="field-note">Textarea — min 3 rows, placeholder: "Tell us about relevant skills or past volunteer experience…"</div></div>
+        <div class="field-box full"><div class="field-label">Availability <span class="required-dot"></span></div><div class="field-note">Radio group or styled select: Weekdays · Weekends · Both · Flexible</div></div>
+        <div class="field-box full"><div class="field-label">Submit Button</div><div class="field-note">Full-width teal button "Submit Application →" with loading spinner state. Success state: Green tick + "Thank you! We'll be in touch soon." error state: inline red messages per field.</div></div>
+      </div>
+    </div>
+
+    <!-- ═══ 12. DONATION ══════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s12">
+      <div class="chapter-label">Section 10</div>
+      <h2>Donation <em>CTA Section</em></h2>
+      <p class="chapter-intro">A full-width, emotionally powerful section designed to convert visitors into donors. Background: a compelling full-bleed image with a deep dark overlay. Large typography. Two donation pathways.</p>
+      <div class="section-grid two-col">
+        <div class="sec-card">
+          <h3>Background Image</h3>
+          <p>A wide, emotionally resonant image: children in need, or a moment of relief/joy as someone receives help. Full-bleed behind dark 70% overlay. The image should evoke empathy without exploitation — dignified, hopeful.</p>
+          <div class="img-tags">
+            <span class="tag tag-img">📸 Impactful humanitarian moment</span>
+            <span class="tag tag-img">Min 1920×800px wide crop</span>
+          </div>
+        </div>
+        <div class="sec-card">
+          <h3>Content Layout</h3>
+          <p>Centred layout: Gold italic "Make a Difference" label → Large white heading "Your Gift Changes Lives" → Subtext paragraph → Two cards side by side: (1) Bank Transfer — phone number, account details styled neatly. (2) Partner/Email — email address + partner CTA. Below: Large teal "Donate Now" button. Social proof strip: "Join 200+ volunteers transforming Nigeria".</p>
+          <div class="img-tags">
+            <span class="tag tag-gold">Gold accent heading</span>
+            <span class="tag tag-info">Two donation method cards</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 13. PARTNERS ══════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s13">
+      <div class="chapter-label">Section 11</div>
+      <h2>Partners & <em>Trust Bar</em></h2>
+      <p class="chapter-intro">A light cream section showing partner logos/churches in a marquee scroll strip. Builds credibility and trust. Simple, clean, professional.</p>
+      <div class="section-grid">
+        <div class="sec-card">
+          <h3>Marquee Logo Strip</h3>
+          <p>Heading: "Trusted Partners & Collaborators". Below: An infinite auto-scrolling strip of 6–10 partner/church logos in grayscale (on hover: full colour). Smooth CSS animation loop. On mobile: same marquee, slower speed. No logos? Use placeholder icon tiles with partner names in text instead.</p>
+          <div class="img-tags">
+            <span class="tag tag-img">Partner logos (SVG/PNG, transparent bg)</span>
+            <span class="tag tag-info">Grayscale default → colour hover</span>
+            <span class="tag tag-info">Infinite CSS marquee scroll</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 14. FOOTER ════════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s14">
+      <div class="chapter-label">Section 12</div>
+      <h2>Footer <em>Section</em></h2>
+      <p class="chapter-intro">A rich, multi-column footer in deep dark green. Contains logo, tagline, navigation links, program links, contact info, social icons and legal links. Above the footer: a teal gradient "pre-footer" CTA strip.</p>
+
+      <div class="section-grid" style="margin-top:20px">
+        <div class="sec-card">
+          <h3>Pre-Footer CTA Strip</h3>
+          <p>Full-width teal-to-deep-green gradient band. Contains: "Ready to Make a Difference?" heading + "Volunteer Today" and "Donate Now" buttons side by side. Bold, attention-grabbing. Acts as one final conversion touchpoint before the footer.</p>
+          <div class="img-tags"><span class="tag tag-gold">Gradient strip — teal to dark green</span></div>
+        </div>
+      </div>
+
+      <div class="footer-spec">
+        <div class="footer-col">
+          <h5>Column 1 — Brand</h5>
+          <ul>
+            <li>Foundation logo (white version)</li>
+            <li>Tagline: "Faith · Compassion · Empowerment"</li>
+            <li>2-line mission summary</li>
+            <li>Social media icons (see below)</li>
+            <li>Registered NGO badge text</li>
+          </ul>
+          <div class="social-row">
+            <span class="social-chip">📘 Facebook</span>
+            <span class="social-chip">📸 Instagram</span>
+            <span class="social-chip">🐦 Twitter / X</span>
+            <span class="social-chip">▶️ YouTube</span>
+            <span class="social-chip">💬 WhatsApp</span>
+            <span class="social-chip">in LinkedIn</span>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h5>Column 2 — Quick Links</h5>
+          <ul>
+            <li>Home</li>
+            <li>About Us</li>
+            <li>Programs</li>
+            <li>Gallery</li>
+            <li>Volunteer</li>
+            <li>Donate</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Column 3 — Programs</h5>
+          <ul>
+            <li>Orphanage Visitation</li>
+            <li>1000 Bible Project</li>
+            <li>Skill Acquisition</li>
+            <li>Made4More</li>
+            <li>Widows Support</li>
+            <li>Scholarships</li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Column 4 — Contact</h5>
+          <ul>
+            <li>📞 +234 703 056 1053</li>
+            <li>✉️ thefaypateffect@gmail.com</li>
+            <li>📍 Nigeria</li>
+            <li>🕐 Mon–Fri, 9am–5pm</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sec-card" style="margin-top:20px">
+        <h3>Footer Bottom Bar</h3>
+        <p>A thin full-width bar at the very bottom: left — "© 2026 The Faypat Effect Foundation. All rights reserved. Registered Non-Profit, Nigeria." Right — three text links: Privacy Policy · Terms of Use · Cookie Policy. A subtle top border in rgba teal. Font size 0.75rem, color gray-500.</p>
+        <div class="img-tags">
+          <span class="tag tag-info">Single-row bottom bar</span>
+          <span class="tag tag-info">Legal links right-aligned on desktop</span>
+          <span class="tag tag-info">Stacked on mobile</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 15. RESPONSIVE ════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s15">
+      <div class="chapter-label">15 — Responsive Design</div>
+      <h2>Breakpoints &<br><em>Mobile-First Rules</em></h2>
+      <p class="chapter-intro">The site must be pixel-perfect at all sizes. Design mobile-first — build for 375px and scale up. Test at every breakpoint listed below.</p>
+      <table class="resp-table" style="margin-top:28px">
+        <thead>
+          <tr>
+            <th>Breakpoint</th>
+            <th>Label</th>
+            <th>Key Layout Changes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>320–479px</td><td>Small Mobile</td><td>Single column everything. Nav becomes drawer. Hero text 2.5rem. Stats stack 2×2. Footer stacks fully.</td></tr>
+          <tr><td>480–767px</td><td>Mobile</td><td>Single column. Gallery 2-col. Programs horizontal scroll. Form full-width. Footer 2-col.</td></tr>
+          <tr><td>768–1023px</td><td>Tablet</td><td>2-column layouts. Gallery 3-col. Pillars 2×2. Founder section stacks. Footer 2-col.</td></tr>
+          <tr><td>1024–1279px</td><td>Small Desktop</td><td>Full 3–4 col layouts. Gallery 4-col. Hero full height. Nav full horizontal. Footer 4-col.</td></tr>
+          <tr><td>1280px+</td><td>Large Desktop</td><td>Max-width container 1280px centred. Generous white-space. Hero image fills viewport width.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-grid two-col" style="margin-top:24px">
+        <div class="sec-card">
+          <h3>Mobile Nav</h3>
+          <p>Hamburger icon (top right). Tap opens a full-height slide-over drawer from the right with all nav links in large Cormorant Garamond text, Donate button at bottom, social icons row, and an X close button. Background: #061e15 with subtle teal gradient.</p>
+        </div>
+        <div class="sec-card">
+          <h3>Touch Interactions</h3>
+          <p>Hero slider: swipe left/right. Gallery: swipe through lightbox. Programs carousel: touch-scroll. Form inputs: proper mobile keyboards triggered (email, tel). Tap targets minimum 44×44px. Smooth momentum scrolling (-webkit-overflow-scrolling: touch).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ 16. ANIMATIONS ════════════════════════════════════════ -->
+    <div class="chapter fade-up" id="s16">
+      <div class="chapter-label">16 — Motion Design</div>
+      <h2>Animations &<br><em>Interactions</em></h2>
+      <p class="chapter-intro">Motion should feel purposeful and organic — not flashy. It guides the user's eye and rewards exploration. All animations respect prefers-reduced-motion.</p>
+      <div class="section-grid two-col">
+        <div class="sec-card"><h3>Page Load</h3><p>Nav slides in from top (0.4s). Hero text stagger-fades up (0.2s delay per line). Stat strip slides up from bottom (0.6s). Overall: elegant, composed entrance — not aggressive.</p></div>
+        <div class="sec-card"><h3>Scroll Reveals</h3><p>All sections: fade-up + translate-Y(30px) → (0) as they enter the viewport. Use IntersectionObserver. Stagger children by 80ms each for a cascading feel.</p></div>
+        <div class="sec-card"><h3>Hero Slideshow</h3><p>5s per slide. Crossfade transition (1s). Subtle Ken Burns zoom (scale 1.0 → 1.06 over 5s). Dot indicators animate width on active state.</p></div>
+        <div class="sec-card"><h3>Counter Animation</h3><p>Statistics count up from 0 to final value in 2s using easeOutCubic curve when the stat strip enters the viewport. Each stat starts with 200ms offset.</p></div>
+        <div class="sec-card"><h3>Card Hovers</h3><p>Pillar cards: image zoom (scale 1.05) + border glow. Program cards: overlay slides up. Gallery images: teal scrim fades in + icon appears. All transitions: 0.3s ease.</p></div>
+        <div class="sec-card"><h3>Form Interactions</h3><p>Field focus: teal bottom-border animates from left to right (transform scaleX). Button submit: loading spinner replaces text. Success: green checkmark animates in with scale bounce.</p></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ─── CLOSING NOTE ─────────────────────────────────────────── -->
+    <div style="text-align:center; padding: 60px 24px;">
+      <div class="cover-badge">Design Brief Complete</div>
+      <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:300; margin-top:16px; color:var(--white);">
+        Ready to <em style="color:var(--g-accent);font-style:italic;">Build</em> It
+      </h2>
+      <p style="color:var(--gray-300); max-width:480px; margin: 16px auto; font-size:.9rem; line-height:1.75;">
+        This brief covers all 12 sections, image specifications, the full gallery, volunteer form fields, footer layout, responsive rules and animation design. Hand this to any developer or designer to begin implementation.
+      </p>
+      <div style="margin-top:32px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <div style="background:rgba(0,217,163,.08);border:1px solid rgba(0,217,163,.2);border-radius:12px;padding:20px 28px;text-align:center;">
+          <div style="font-size:1.8rem;font-family:'Cormorant Garamond',serif;color:var(--g-accent);">12</div>
+          <div style="font-size:.75rem;color:var(--gray-500);margin-top:4px;">Sections Defined</div>
+        </div>
+        <div style="background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);border-radius:12px;padding:20px 28px;text-align:center;">
+          <div style="font-size:1.8rem;font-family:'Cormorant Garamond',serif;color:var(--gold);">24+</div>
+          <div style="font-size:.75rem;color:var(--gray-500);margin-top:4px;">Image Placements</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 28px;text-align:center;">
+          <div style="font-size:1.8rem;font-family:'Cormorant Garamond',serif;color:var(--white);">5</div>
+          <div style="font-size:.75rem;color:var(--gray-500);margin-top:4px;">Hero Slides</div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px 28px;text-align:center;">
+          <div style="font-size:1.8rem;font-family:'Cormorant Garamond',serif;color:var(--white);">11</div>
+          <div style="font-size:.75rem;color:var(--gray-500);margin-top:4px;">Form Fields</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /brief -->
+
+  <script>
+    // Fade-up intersection observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }});
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
